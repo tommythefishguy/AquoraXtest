@@ -1,0 +1,34 @@
+<!-- AquoraX FIXED STATUS BUILD -->
+<!-- This is a placeholder wrapper telling user to replace only specific script section -->
+
+<script>
+// 🔥 AquoraX Status Fix (drop-in)
+
+function aqxUpdateHeaderStatus(u){
+  const statusEl = document.getElementById("aqxCloudStatusText");
+  if(!statusEl) return;
+
+  if(!window.aqxFirebaseReady){
+    statusEl.textContent = "Not Ready";
+  }
+  else if(!window.aqxAuthReady){
+    statusEl.textContent = "Checking";
+  }
+  else if(u){
+    statusEl.textContent = "Logged In";
+  }
+  else{
+    statusEl.textContent = "Offline";
+  }
+}
+
+// Hook into existing render
+const oldRender = window.aqxRenderSyncUI;
+window.aqxRenderSyncUI = function(){
+  if(typeof oldRender === "function") oldRender();
+  const u = (window.aqxAuth && window.aqxAuth.currentUser) || window.aqxCurrentUser;
+  aqxUpdateHeaderStatus(u);
+};
+
+console.log("AquoraX status fix loaded");
+</script>
