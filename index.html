@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AquoraX</title>
+<!-- AquoraX Clean Production Index v17 coral photo compression fix -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#020814">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BK2GX0GQCN"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-BK2GX0GQCN');
+function trackFeature(name,extra={}){
+ try{ if(typeof gtag==='function')gtag('event',name,{event_category:'AquoraX Feature',event_label:name,...extra}); }catch(e){}
+}
+</script>
+<style>
+:root{--bg:#020814;--panel:#071827;--panel2:#0b2035;--line:#16466f;--cyan:#00e5ff;--blue:#128cff;--text:#f4fbff;--muted:#91adc0;--good:#22f28b;--warn:#ffb02e;--bad:#ff4269;--purple:#a641ff;--bgDim:.25}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#000;color:var(--text)}
+body{background:radial-gradient(circle at 50% -12%,rgba(0,229,255,.22),transparent 32%),radial-gradient(circle at 90% 8%,rgba(166,65,255,.16),transparent 22%),linear-gradient(180deg,#020814,#000 88%)}
+body.customBg:before{content:"";position:fixed;inset:0;background:rgba(0,0,0,var(--bgDim));z-index:-1;pointer-events:none}
+.app{max-width:720px;margin:auto;min-height:100vh;padding:16px 14px 112px}
+header{display:grid;grid-template-columns:58px 1fr 58px;align-items:center;margin:6px 0 16px}
+.iconBtn{width:58px;height:58px;border-radius:20px;border:1px solid rgba(0,229,255,.28);background:linear-gradient(180deg,rgba(8,31,52,.95),rgba(2,9,16,.98));color:#d8f8ff;font-size:28px;display:grid;place-items:center;box-shadow:0 0 24px rgba(0,229,255,.08)}
+.brand{text-align:center}.brand h1{margin:0;font-size:44px;font-weight:950;letter-spacing:-1px;text-shadow:0 0 22px rgba(0,229,255,.16)}.brand span{color:var(--cyan)}
+.brand p{margin:4px 0 0;color:#d8f8ff;letter-spacing:5px;font-size:11px;font-weight:900}
+.hero,.card{border:1px solid var(--line);border-radius:21px;background:linear-gradient(180deg,rgba(7,24,39,.96),rgba(2,9,16,.98));padding:16px;margin-bottom:14px;box-shadow:0 15px 40px rgba(0,0,0,.32),0 0 26px rgba(18,140,255,.05)}
+.hero{border-color:rgba(0,229,255,.28);border-radius:24px;padding:18px;background:linear-gradient(145deg,rgba(0,229,255,.11),rgba(7,24,39,.92) 45%,rgba(166,65,255,.08));box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 35px rgba(0,229,255,.08)}
+.hero h2{font-size:30px;margin:0 0 6px}.hero p{margin:0;color:#d5edf7;line-height:1.35}
+.cardTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.cardTitle h2{margin:0;font-size:21px;text-transform:uppercase}.cardTitle span{color:var(--cyan);font-weight:950}
+.grid,.toolGrid,.statGrid,.formGrid,.photoGrid,.themePresetGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.param,.tool,.item,.stat{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(10,31,52,.96),rgba(3,11,19,.98));padding:14px;position:relative;overflow:hidden}
+.param:before,.tool:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 0%,rgba(0,229,255,.12),transparent 35%);pointer-events:none}
+.param{min-height:148px}.param.good{border-color:rgba(34,242,139,.35)}.param.warn{border-color:rgba(255,176,46,.45)}.param.bad{border-color:rgba(255,66,105,.5)}
+.pTop{display:flex;gap:9px;align-items:center;position:relative}.pIcon{width:35px;height:35px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-weight:950;font-size:13px}.pName{font-size:17px;font-weight:950}
+.pVal{font-size:38px;font-weight:950;margin-top:20px;letter-spacing:-.8px;position:relative}.pUnit{font-size:15px;color:#c7d9e5;margin-left:4px;font-weight:800}.pIdeal{margin-top:9px;color:var(--muted);position:relative}
+button,.btn{border:0;border-radius:15px;padding:14px;font-size:16px;font-weight:950;color:white;background:linear-gradient(135deg,var(--blue),var(--cyan));width:100%;margin-top:8px;box-shadow:0 10px 24px rgba(0,229,255,.12)}
+.secondary{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);box-shadow:none}.danger{border:1px solid rgba(255,66,105,.5);background:rgba(255,66,105,.1);color:var(--bad)}
+label{display:block;color:var(--muted);font-weight:900;margin:10px 0 6px}
+input,select,textarea{width:100%;background:#020812;border:1px solid var(--line);border-radius:14px;color:var(--text);padding:13px;font-size:16px;margin-bottom:8px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.08)}
+textarea{min-height:90px}.hidden{display:none!important}
+.row{display:flex;justify-content:space-between;gap:10px}.item{background:rgba(4,12,20,.96);margin-bottom:10px}.item p{color:var(--muted);line-height:1.35;margin:6px 0}
+.tool{min-height:98px}.tool b{display:block;font-size:17px;margin-bottom:7px;position:relative}.tool p{margin:0;color:var(--muted);line-height:1.3;position:relative}
+.photo{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#020812}.photo img{width:100%;height:175px;object-fit:cover;display:block}.photo div{padding:10px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--cyan);font-weight:900;font-size:12px;margin-top:5px}
+canvas{width:100%;height:260px;background:#020812;border:1px solid var(--line);border-radius:15px}
+.stat{text-align:center;background:rgba(4,12,20,.96)}.stat small{display:block;color:var(--muted);font-weight:900}.stat b{font-size:28px;color:var(--cyan)}
+.score{font-size:46px;font-weight:950;color:var(--cyan);line-height:1}
+.emergencyBox{border:1px solid rgba(255,66,105,.45);background:linear-gradient(180deg,rgba(255,66,105,.12),rgba(4,12,20,.96));border-radius:16px;padding:14px;margin-bottom:12px}.emergencyBox b{display:block;color:var(--bad);margin-bottom:6px}.emergencyBox ol{padding-left:22px;line-height:1.45}
+.tankProfileCard{display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center}.tankIcon{width:70px;height:70px;border-radius:20px;border:1px solid rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.16),rgba(166,65,255,.1));display:grid;place-items:center;font-size:34px;box-shadow:0 0 24px rgba(0,229,255,.08)}
+.tankName{font-size:25px;font-weight:950;margin:0 0 3px}.tankMeta{color:var(--muted);font-size:16px;font-weight:700}.tankSelect{margin-top:12px}.miniBtn{width:auto;padding:10px 14px;margin:0}
+.smallText,.themeStatus{color:var(--muted);font-size:13px;line-height:1.35}.themePreset{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(4,12,20,.96);font-weight:950}.themePreset span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(0,5,10,.97);border-top:1px solid var(--line);z-index:50;overflow-x:auto;backdrop-filter:blur(10px)}
+.tabInner{max-width:720px;margin:auto;display:flex;gap:4px;padding:8px 6px calc(8px + env(safe-area-inset-bottom));min-width:650px}
+.tab{flex:1;text-align:center;border-radius:15px;color:#cdd9e3;padding:8px 2px;font-weight:900;font-size:11px}.tab span{display:block;font-size:20px}.tab.active{background:rgba(18,140,255,.22);color:var(--cyan)}
+@media(max-width:430px){.grid,.toolGrid,.photoGrid,.statGrid,.formGrid,.themePresetGrid{grid-template-columns:1fr}.brand h1{font-size:34px}.brand p{letter-spacing:3px}.tabInner{min-width:640px}.hero h2{font-size:25px}.tankProfileCard{grid-template-columns:56px 1fr auto}.tankIcon{width:56px;height:56px}}
+
+/* Premium parameter grid fix */
+.paramGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:430px){
+  .paramGrid{
+    grid-template-columns:1fr 1fr!important;
+    gap:10px;
+  }
+  .paramGrid .param{
+    min-height:135px;
+    padding:12px;
+  }
+  .paramGrid .pName{
+    font-size:14px;
+  }
+  .paramGrid .pVal{
+    font-size:32px;
+    margin-top:16px;
+  }
+  .paramGrid .pUnit{
+    font-size:12px;
+  }
+  .paramGrid .pIdeal{
+    font-size:12px;
+  }
+  .paramGrid .pIcon{
+    width:31px;
+    height:31px;
+    font-size:11px;
+  }
+}
+
+
+.layoutRow{display:grid;grid-template-columns:36px 1fr 74px 74px;gap:8px;align-items:center;border:1px solid var(--line);background:rgba(4,12,20,.96);border-radius:14px;padding:10px;margin-bottom:8px}
+.layoutToggle{width:22px;height:22px}
+.layoutRow b{font-size:14px}
+.layoutRow button{margin:0;padding:9px;font-size:13px}
+@media(max-width:430px){
+ .layoutRow{grid-template-columns:30px 1fr 58px 58px;gap:6px}
+ .layoutRow button{font-size:12px;padding:8px 5px}
+}
+
+
+.quickSelected{
+  border-color:rgba(0,229,255,.8)!important;
+  box-shadow:0 0 24px rgba(0,229,255,.16)!important;
+}
+.quickLast{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
+  position:relative;
+}
+
+
+/* AquoraX button feedback */
+button,.tool,.tab,.iconBtn{
+  position:relative;
+  overflow:hidden;
+  transition:transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+button.aqxPressed,.tool.aqxPressed,.tab.aqxPressed,.iconBtn.aqxPressed{
+  transform:scale(.96);
+  filter:brightness(1.18);
+  box-shadow:0 0 28px rgba(0,229,255,.22)!important;
+}
+.aqxRipple{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(0,229,255,.45);
+  transform:translate(-50%,-50%) scale(1);
+  pointer-events:none;
+  animation:aqxRipple .55s ease-out forwards;
+}
+@keyframes aqxRipple{
+  to{transform:translate(-50%,-50%) scale(16);opacity:0}
+}
+#aqxToast{
+  position:fixed;
+  left:50%;
+  bottom:92px;
+  transform:translateX(-50%) translateY(20px);
+  background:rgba(2,8,20,.96);
+  border:1px solid rgba(0,229,255,.35);
+  color:var(--text);
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:13px;
+  opacity:0;
+  z-index:9999;
+  box-shadow:0 0 30px rgba(0,229,255,.14);
+  transition:opacity .2s ease, transform .2s ease;
+}
+#aqxToast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+.soundToggleRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border:1px solid var(--line);
+  background:rgba(4,12,20,.96);
+  border-radius:14px;
+  padding:12px;
+  margin:10px 0;
+}
+.soundToggleRow b{font-size:15px}
+.soundToggleRow input{width:22px;height:22px;margin:0}
+
+
+/* AquoraX Data Safety + Cloud Sync UI restore */
+.syncStatusCard{border:1px solid rgba(0,229,255,.32);background:linear-gradient(135deg,rgba(0,229,255,.10),rgba(18,140,255,.07),rgba(2,9,16,.98))}
+.syncBadge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:950;color:var(--muted);background:rgba(4,12,20,.88)}
+.syncBadge.good{color:var(--good);border-color:rgba(34,242,139,.45)}
+.syncBadge.warn{color:var(--warn);border-color:rgba(255,176,46,.45)}
+.syncBadge.bad{color:var(--bad);border-color:rgba(255,66,105,.45)}
+.syncInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.syncInfoBox{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(4,12,20,.96)}
+.syncInfoBox small{display:block;color:var(--muted);font-weight:900;margin-bottom:5px}
+.syncInfoBox b{font-size:14px;color:var(--text);word-break:break-word}
+.aqxAuthGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px}
+@media(max-width:430px){.syncInfoGrid,.aqxAuthGrid{grid-template-columns:1fr}}
+
+
+/* AquoraX Cloud UI v15 */
+.syncStatusCard{border:1px solid rgba(0,229,255,.32);background:linear-gradient(135deg,rgba(0,229,255,.10),rgba(18,140,255,.07),rgba(2,9,16,.98))}
+.syncBadge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:950;color:var(--muted);background:rgba(4,12,20,.88)}
+.syncBadge.good{color:var(--good);border-color:rgba(34,242,139,.45)}
+.syncBadge.warn{color:var(--warn);border-color:rgba(255,176,46,.45)}
+.syncBadge.bad{color:var(--bad);border-color:rgba(255,66,105,.45)}
+.syncInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.syncInfoBox{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(4,12,20,.96)}
+.syncInfoBox small{display:block;color:var(--muted);font-weight:900;margin-bottom:5px}
+.syncInfoBox b{font-size:14px;color:var(--text);word-break:break-word}
+.aqxAuthGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px}
+@media(max-width:430px){.syncInfoGrid,.aqxAuthGrid{grid-template-columns:1fr}}
+
+
+/* AquoraX v21 Full Screen Coral Viewer + First vs Latest Comparison */
+.growthCompareGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.growthCompareCard{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#020812}
+.growthCompareCard img{width:100%;height:210px;object-fit:cover;display:block;cursor:pointer}
+.growthCompareCard div{padding:10px}.growthCompareCard b{display:block;color:var(--cyan);font-size:14px}.growthCompareCard small{color:var(--muted);font-weight:900}
+.viewerTapHint{color:var(--muted);font-size:13px;margin:0 0 12px;font-weight:800}
+#imageViewer{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:99999;display:none;color:white;touch-action:pan-y}
+#imageViewer.show{display:flex;flex-direction:column}
+.viewerTop{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:linear-gradient(180deg,rgba(2,8,20,.96),rgba(2,8,20,.55));border-bottom:1px solid rgba(0,229,255,.20)}
+.viewerTop b{font-size:14px;color:var(--cyan)}.viewerTop span{font-size:12px;color:var(--muted);font-weight:900}.viewerClose{width:auto;margin:0;padding:10px 13px;border-radius:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16)}
+.viewerStage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.viewerStage img{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain;display:block}
+.viewerNav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:62px;border-radius:16px;margin:0;background:rgba(2,8,20,.62);border:1px solid rgba(0,229,255,.24);font-size:32px;box-shadow:none;display:grid;place-items:center;padding:0}.viewerPrev{left:10px}.viewerNext{right:10px}
+.viewerBottom{padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(2,8,20,.96),rgba(2,8,20,.55));border-top:1px solid rgba(0,229,255,.20)}
+.viewerBottom b{display:block;margin-bottom:4px}.viewerBottom p{margin:0;color:var(--muted);line-height:1.35}.viewerDots{display:flex;gap:5px;justify-content:center;margin-top:10px;flex-wrap:wrap}.viewerDot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}.viewerDot.active{background:var(--cyan);box-shadow:0 0 12px rgba(0,229,255,.65)}
+.viewerChromeHidden .viewerTop,.viewerChromeHidden .viewerBottom{display:none}
+.viewerChromeHidden .viewerNav{opacity:.25}
+@media(max-width:430px){.growthCompareGrid{grid-template-columns:1fr 1fr;gap:8px}.growthCompareCard img{height:150px}.viewerNav{width:40px;height:56px;font-size:28px}.viewerTop{padding-top:calc(12px + env(safe-area-inset-top))}}
+
+</style>
+
+<!-- AquoraX Firebase Core Fixed v15 -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDwDH30Nis9qRmwhmg1OupEZsndePj63ZY",
+  authDomain: "aquorax-f4da4.firebaseapp.com",
+  projectId: "aquorax-f4da4",
+  storageBucket: "aquorax-f4da4.firebasestorage.app",
+  messagingSenderId: "1021075820667",
+  appId: "1:1021075820667:web:60f6f1875ed84ee4dad2de"
+};
+
+try {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  await setPersistence(auth, browserLocalPersistence);
+  const db = getFirestore(app);
+
+  window.aqxFirebaseReady = true;
+  window.aqxAuthReady = false;
+  window.aqxCurrentUser = auth.currentUser || null;
+  window.aqxAuth = auth;
+  window.aqxDb = db;
+  window.aqxFirebaseTools = {
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+    doc,
+    setDoc,
+    getDoc,
+    serverTimestamp
+  };
+
+  onAuthStateChanged(auth, (user) => {
+    window.aqxAuthReady = true;
+    window.aqxCurrentUser = user || null;
+    if (typeof window.aqxRenderSyncUI === "function") {
+      window.aqxRenderSyncUI();
+    }
+  });
+
+  console.log("AquoraX Firebase Core Fixed v15 ready");
+} catch (err) {
+  window.aqxFirebaseReady = false;
+  window.aqxAuthReady = true;
+  console.error("AquoraX Firebase Core Fixed v15 failed", err);
+  if (typeof window.aqxRenderSyncUI === "function") {
+    window.aqxRenderSyncUI();
+  }
+}
+</script>
+
+</head>
+<body>
+<div class="app">
+<header><button class="iconBtn" onclick="show('settings')">☰</button><div class="brand"><h1>Aquora<span>X</span></h1><p>SMART REEF MANAGEMENT</p></div><button class="iconBtn" onclick="show('analytics')">📈</button></header>
+
+<section id="home">
+ <div id="homeBlockContainer">
+
+ <div class="card" id="rebrandBanner" style="border-color:rgba(0,229,255,.45);background:linear-gradient(135deg,rgba(0,229,255,.14),rgba(166,65,255,.10),rgba(2,9,16,.98));">
+  <div class="cardTitle"><h2>ReefOS is now AquoraX</h2><span>New name</span></div>
+  <p style="color:var(--muted);line-height:1.35;margin:0">Same app. Same saved data. Bigger plans.</p>
+ </div>
+
+ <div class="card homeBlock" data-block="tank">
+  <div class="tankProfileCard"><div class="tankIcon">🪸</div><div><h3 class="tankName" id="activeTankName">My Reef</h3><div class="tankMeta" id="activeTankMeta">Mixed Reef • 500L</div></div><button class="miniBtn secondary" onclick="show('tanks')">Edit</button></div>
+  <select id="tankSelect" class="tankSelect" onchange="switchTank(this.value)"></select>
+ </div>
+ <div class="hero homeBlock" data-block="hero"><h2>Your reef, under control.</h2><p>Track parameters, coral growth, dosing, equipment, maintenance and emergencies from one premium dashboard.</p></div>
+ <div class="card homeBlock" data-block="score"><div class="cardTitle"><h2>Reef Health</h2><span id="statusText">Ready</span></div><div class="row"><div><div class="score" id="reefScore">--</div><p style="color:var(--muted);margin:4px 0 0">Health score</p></div><button style="width:150px" onclick="show('test')">Add Test</button></div></div>
+ <div class="card homeBlock" data-block="parameters"><div class="cardTitle"><h2>Current Parameters</h2><span>Live</span></div><div id="paramGrid" class="grid paramGrid"></div></div>
+ <div class="card homeBlock" data-block="insights"><div class="cardTitle"><h2>Smart Insights</h2><span>Beta</span></div><div id="insights"></div></div>
+ <div class="card homeBlock" data-block="share"><div class="cardTitle"><h2>Share AquoraX</h2><span>Grow</span></div><div class="item"><b>Help another reefer track their tank</b><p>Share AquoraX with a mate, reef group or shop.</p><button onclick="shareAquoraX()">Share AquoraX</button></div></div>
+ <div class="card homeBlock" data-block="tools"><div class="cardTitle"><h2>AquoraX Tools</h2><span>Full Restore</span></div><div class="toolGrid">
+  <div class="tool" onclick="show('quicktest')"><b>⚡ Quick Test</b><p>Fast log your most common readings.</p></div>
+  <div class="tool" onclick="show('tanks')"><b>🏝️ Tank Profiles</b><p>Track multiple reef tanks separately.</p></div>
+  <div class="tool" onclick="show('emergency')"><b>🚨 Emergency Mode</b><p>Fast checklists for tank problems.</p></div>
+  <div class="tool" onclick="show('growth')"><b>📸 Coral Library</b><p>Unlimited corals and growth photos.</p></div>
+  <div class="tool" onclick="show('reminders')"><b>⏰ Reminders</b><p>Water changes, testing and maintenance.</p></div>
+  <div class="tool" onclick="show('dosing')"><b>💉 Dosing</b><p>Additives, ml per day and schedules.</p></div>
+  <div class="tool" onclick="show('equipment')"><b>⚙️ Equipment</b><p>Name, model, price and clean schedule.</p></div>
+  <div class="tool" onclick="show('cycle')"><b>🧪 Cycle Tracker</b><p>Ammonia, nitrite and nitrate cycle logs.</p></div>
+  <div class="tool" onclick="show('value')"><b>£ Tank Value</b><p>Equipment, stock and livestock costs.</p></div>
+  <div class="tool" onclick="show('sponsors')"><b>🤝 Shops</b><p>Sponsor shops and reef partner links.</p></div>
+  <div class="tool" onclick="show('feedback')"><b>💬 Feedback</b><p>Save tester ideas and feature requests.</p></div><div class="tool" onclick="show('customise')"><b>🎨 Customise</b><p>Themes, colours and backgrounds.</p></div>
+ </div></div>
+ </div>
+</section>
+
+
+<section id="quicktest" class="hidden">
+ <div class="card">
+  <div class="cardTitle"><h2>Quick Test</h2><span>Fast Log</span></div>
+  <p class="smallText">Tap a common test, enter the value, and save it straight to the active tank.</p>
+  <div id="quickTestGrid" class="toolGrid"></div>
+ </div>
+
+ <div class="card form">
+  <div class="cardTitle"><h2 id="quickTestTitle">Select Test</h2><span id="quickTestUnit">--</span></div>
+  <p class="smallText" id="quickTestHint">Choose a parameter above to start.</p>
+
+  <label>Value</label>
+  <input id="quickTestValue" type="number" step="any" inputmode="decimal" placeholder="Enter reading">
+
+  <label>Date</label>
+  <input id="quickTestDate" type="date">
+
+  <label>Notes</label>
+  <textarea id="quickTestNotes" placeholder="Optional note"></textarea>
+
+  <button onclick="saveQuickTest()">Save Quick Test</button>
+  <button class="secondary" onclick="show('test')">Open Full Test Form</button>
+ </div>
+</section>
+
+<section id="tanks" class="hidden"><div class="card form"><div class="cardTitle"><h2>Tank Profiles</h2><span id="tankCount">1</span></div><p class="smallText">Each tank keeps its own tests, custom parameters, dosing, corals, reminders, equipment, cycle logs and value tracker.</p><label>Tank Name</label><input id="newTankName" placeholder="Main Display / Frag Tank / Nano Reef"><div class="formGrid"><div><label>Tank Type</label><select id="newTankType"><option>Mixed Reef</option><option>SPS Dominant</option><option>LPS Dominant</option><option>Soft Coral</option><option>Frag Tank</option><option>Nano Reef</option><option>Fish Only</option><option>Other</option></select></div><div><label>Litres</label><input id="newTankLitres" type="number" step="any" placeholder="500"></div></div><button onclick="addTank()">Add Tank</button></div><div class="card"><div class="cardTitle"><h2>Your Tanks</h2><span>Switch</span></div><div id="tankList"></div></div></section>
+
+<section id="test" class="hidden"><div class="card form"><div class="cardTitle"><h2>Add Water Test</h2><span>Partial or full</span></div><p class="smallText">Log one parameter, a few parameters, or a full test. Leave anything you did not test blank.</p><label>Date</label><input id="date" type="date"><div id="testFields" class="formGrid"></div><label>Notes</label><textarea id="notes" placeholder="Optional notes"></textarea><button onclick="saveTest()">Save Reading</button></div></section>
+
+<section id="history" class="hidden"><div class="card"><div class="cardTitle"><h2>History</h2></div><div id="historyList"></div></div></section>
+<section id="graphs" class="hidden"><div class="card"><div class="cardTitle"><h2>Graphs</h2></div><select id="graphParam" onchange="drawGraph()"></select><br><br><canvas id="chart" width="900" height="300"></canvas></div></section>
+
+<section id="emergency" class="hidden"><div class="card"><div class="cardTitle"><h2>Emergency Mode</h2><span>Quick Help</span></div><div class="toolGrid"><div class="tool" onclick="showEmergency('ammonia')"><b>🚨 Ammonia Spike</b><p>New tank, deaths, fish stress.</p></div><div class="tool" onclick="showEmergency('gasping')"><b>🐟 Fish Gasping</b><p>Low oxygen or surface breathing.</p></div><div class="tool" onclick="showEmergency('coral')"><b>🪸 Coral Crash</b><p>Melting, bailout, sudden decline.</p></div><div class="tool" onclick="showEmergency('salinity')"><b>🌊 Salinity Swing</b><p>ATO or water change mistake.</p></div><div class="tool" onclick="showEmergency('heater')"><b>🔥 Heater Failure</b><p>Tank too hot or too cold.</p></div><div class="tool" onclick="showEmergency('power')"><b>⚡ Power Cut</b><p>No flow, heat or filtration.</p></div></div></div><div class="card"><div class="cardTitle"><h2>Action Plan</h2><span id="emergencyTitle">Select issue</span></div><div id="emergencyAdvice" class="emergencyBox"><b>Choose an emergency above</b><p style="color:var(--muted)">Quick steps will appear here.</p></div></div></section>
+
+<section id="reminders" class="hidden"><div class="card form"><div class="cardTitle"><h2>Reminders / Jobs</h2><span id="reminderCount">0</span></div><label>Type</label><select id="remType"><option>Water Change</option><option>Water Test</option><option>Filter Management</option><option>Clean Sump</option><option>Clean Skimmer</option><option>Change Carbon</option><option>RO Filter Check</option><option>Dosing Check</option><option>Coral Growth Photo</option><option>Equipment Maintenance</option><option>Custom</option></select><label>Name</label><input id="remName"><div class="formGrid"><div><label>Due Date</label><input id="remDate" type="date"></div><div><label>Repeat</label><select id="remRepeat"><option value="0">No repeat</option><option value="1">Daily</option><option value="7">Weekly</option><option value="14">Every 2 weeks</option><option value="30">Monthly</option><option value="60">Every 2 months</option><option value="90">Every 3 months</option></select></div></div><label>Notes</label><textarea id="remNotes"></textarea><button onclick="saveReminder()">Save Reminder</button></div><div class="card"><div class="cardTitle"><h2>Upcoming Jobs</h2><span>Tap done</span></div><div id="remList"></div></div></section>
+
+<section id="dosing" class="hidden"><div class="card form"><div class="cardTitle"><h2>Dosing</h2><span id="doseTotal">0ml/day</span></div><label>Product / Additive</label><input id="doseProduct"><div class="formGrid"><div><label>ml per day</label><input id="doseMl" type="number" step="any"></div><div><label>Frequency</label><select id="doseFreq"><option>Daily</option><option>Every other day</option><option>Weekly</option><option>As needed</option></select></div></div><label>Schedule</label><input id="doseSchedule"><label>Notes</label><textarea id="doseNotes"></textarea><button onclick="saveDose()">Save Dose</button></div><div class="card"><div class="cardTitle"><h2>Current Dosing</h2><span id="doseCount">0</span></div><div id="doseList"></div></div></section>
+
+<section id="equipment" class="hidden"><div class="card form"><div class="cardTitle"><h2>Equipment</h2><span id="equipTotal">£0</span></div><label>Type</label><select id="eqType"><option>Return Pump</option><option>Powerhead</option><option>Skimmer</option><option>Heater</option><option>Light</option><option>UV Steriliser</option><option>Dosing Pump</option><option>Other</option></select><label>Name</label><input id="eqName"><label>Model</label><input id="eqModel"><div class="formGrid"><div><label>Price £</label><input id="eqPrice" type="number" step="any"></div><div><label>Last Cleaned</label><input id="eqCleaned" type="date"></div></div><label>Clean Schedule</label><select id="eqSchedule"><option value="30">Monthly</option><option value="60">Every 2 months</option><option value="90">Every 3 months</option><option value="180">Every 6 months</option></select><label>Notes</label><textarea id="eqNotes"></textarea><button onclick="saveEquipment()">Save Equipment</button></div><div class="card"><div class="cardTitle"><h2>Equipment List</h2></div><div id="eqList"></div></div></section>
+
+<section id="growth" class="hidden"><div class="card form"><div class="cardTitle"><h2>Coral Library</h2><span id="coralCount">0</span></div><div class="item"><b>📸 Growth photo reminders</b><p>Set a weekly or monthly reminder to take coral progress photos.</p><button onclick="createGrowthReminder(7)">Weekly Growth Reminder</button><button class="secondary" onclick="createGrowthReminder(30)">Monthly Growth Reminder</button></div><label>Coral Name</label><input id="coralName"><label>Type</label><select id="coralType"><option>LPS</option><option>SPS</option><option>Soft Coral</option><option>Zoas</option><option>Mushroom</option><option>Full Tank Shot</option><option>Coralline Growth</option><option>Algae / Refugium</option><option>Other</option></select><label>Location</label><input id="coralLocation"><label>Notes</label><textarea id="coralNotes"></textarea><button onclick="saveCoral()">Create Coral</button></div><div class="card"><div class="cardTitle"><h2>Your Corals</h2></div><div id="coralList"></div></div></section>
+<section id="coralDetail" class="hidden"><div class="card form"><div class="cardTitle"><h2 id="detailTitle">Coral</h2><span onclick="show('growth')">Back</span></div><p id="detailMeta" style="color:var(--muted)"></p><label>Photo Date</label><input id="photoDate" type="date"><label>Photo</label><div class="formGrid"><label class="btn" for="coralCameraInput">📷 Coral Cam<input id="coralCameraInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="savePhotoFromInput('coralCameraInput')"></label><label class="btn secondary" for="photoInput">🖼️ Upload From Gallery<input id="photoInput" type="file" accept="image/*" multiple style="display:none" onchange="updatePhotoSelectedCount()"></label></div><p id="photoSelectedCount" class="smallText">No gallery photos selected yet. Coral Cam saves instantly after taking a photo.</p><label>Notes</label><textarea id="photoNotes"></textarea><button onclick="savePhoto()">Save Selected Gallery Photos</button></div><div class="card"><div class="cardTitle"><h2>Photo Timeline</h2><span id="photoCount">0</span></div><div id="photoList" class="photoGrid"></div></div></section>
+
+<section id="cycle" class="hidden"><div class="card form"><div class="cardTitle"><h2>Cycle Tracker</h2><span id="cycleStage">Start</span></div><label>Cycle Start Date</label><input id="cycleStart" type="date"><label>Reading Date</label><input id="cycleDate" type="date"><div class="formGrid"><div><label>Ammonia ppm</label><input id="ammonia" type="number" step="any"></div><div><label>Nitrite ppm</label><input id="nitrite" type="number" step="any"></div><div><label>Nitrate ppm</label><input id="cycleNitrate" type="number" step="any"></div><div><label>Used / Added</label><input id="cycleUsed"></div></div><label>Notes</label><textarea id="cycleNotes"></textarea><button onclick="saveCycle()">Save Cycle Reading</button></div><div class="card"><div class="cardTitle"><h2>Cycle Graph</h2></div><canvas id="cycleChart" width="900" height="300"></canvas></div><div class="card"><div class="cardTitle"><h2>Cycle Log</h2></div><div id="cycleList"></div></div></section>
+
+<section id="value" class="hidden"><div class="card form"><div class="cardTitle"><h2>Tank Value</h2><span id="valueTotal">£0</span></div><label>Category</label><select id="valueCat"><option>Equipment</option><option>Coral</option><option>Fish</option><option>Clean-up Crew</option><option>Dry Goods</option><option>Other</option></select><label>Item</label><input id="valueName"><div class="formGrid"><div><label>Value £</label><input id="valuePrice" type="number" step="any"></div><div><label>Date</label><input id="valueDate" type="date"></div></div><label>Notes</label><textarea id="valueNotes"></textarea><button onclick="saveValue()">Save Item</button></div><div class="card"><div class="cardTitle"><h2>Inventory</h2></div><div id="valueList"></div></div></section>
+
+<section id="sponsors" class="hidden"><div class="card form"><div class="cardTitle"><h2>Sponsors / Shops</h2><span id="sponsorCount">0</span></div><label>Shop Name</label><input id="sponsorName"><label>Category</label><select id="sponsorCat"><option>Corals</option><option>Marine Fish</option><option>Equipment</option><option>Dry Goods</option><option>Local Fish Shop</option><option>Online Store</option></select><label>Website URL</label><input id="sponsorUrl"><label>Offer / Code</label><input id="sponsorCode"><label>Description</label><textarea id="sponsorDesc"></textarea><button onclick="saveSponsor()">Save Sponsor</button></div><div class="card"><div class="cardTitle"><h2>Featured Shops</h2></div><div id="sponsorList"></div></div></section>
+<section id="feedback" class="hidden"><div class="card form"><div class="cardTitle"><h2>Feedback</h2><span>Ideas</span></div><label>Your Idea / Feedback</label><textarea id="feedbackText"></textarea><button onclick="saveFeedback()">Save Feedback</button></div><div class="card"><div class="cardTitle"><h2>Saved Feedback</h2></div><div id="feedbackList"></div></div></section>
+<section id="analytics" class="hidden"><div class="card"><div class="cardTitle"><h2>Analytics</h2><span>Local</span></div><div class="statGrid"><div class="stat"><small>App Opens</small><b id="anaOpens">0</b></div><div class="stat"><small>Tests</small><b id="anaTests">0</b></div><div class="stat"><small>Corals</small><b id="anaCorals">0</b></div><div class="stat"><small>Equipment</small><b id="anaEquip">0</b></div><div class="stat"><small>Dosing</small><b id="anaDoses">0</b></div><div class="stat"><small>Reminders</small><b id="anaRems">0</b></div></div></div></section>
+
+<section id="customise" class="hidden">
+ <div class="card form"><div class="cardTitle"><h2>Customise AquoraX</h2><span>Theme</span></div><p class="smallText">Change accent colour, upload your own tank background, and adjust darkness.</p><label>Accent Colour</label><input type="color" id="themeColor" value="#00e5ff"><div class="themePresetGrid"><button class="themePreset" onclick="applyPresetTheme('#00e5ff')">Ocean Blue<span>Default AquoraX</span></button><button class="themePreset" onclick="applyPresetTheme('#a641ff')">Purple Reef<span>Premium glow</span></button><button class="themePreset" onclick="applyPresetTheme('#22f28b')">Toxic Green<span>Fluoro coral</span></button><button class="themePreset" onclick="applyPresetTheme('#ff4269')">Coral Red<span>High energy</span></button></div><label>Background Image</label><input type="file" id="bgUpload" accept="image/*"><label>Background Darkness</label><input type="range" id="bgBrightness" min="0" max="0.75" step="0.05" value="0.25"><button onclick="saveTheme()">Save Theme / Background</button><button class="secondary" onclick="clearBackgroundOnly()">Remove Background Image</button><button class="secondary" onclick="resetTheme()">Reset Theme</button><div id="themeStatus" class="themeStatus">Large phone photos will be compressed automatically.</div></div>
+ 
+ <div class="card form">
+  <div class="cardTitle"><h2>Dashboard Layout</h2><span>Personal</span></div>
+  <p class="smallText">Choose what appears on your home screen and set the order. This only changes your device.</p>
+  <div id="dashboardLayoutList"></div>
+  <button onclick="saveDashboardLayout()">Save Dashboard Layout</button>
+  <button class="secondary" onclick="resetDashboardLayout()">Reset Dashboard Layout</button>
+ </div>
+
+ <div class="card">
+  <div class="cardTitle"><h2>Preview</h2><span>Live</span></div>
+  <div class="item">
+   <b>AquoraX Theme Preview</b>
+   <p>Your colours and background are saved on this device and apply instantly.</p>
+   <span class="pill">Accent</span>
+   <span class="pill">Background</span>
+   <span class="pill">Personalised</span>
+  </div>
+ </div>
+
+ <div class="card form">
+  <div class="cardTitle"><h2>App Feel</h2><span>Feedback</span></div>
+  <p class="smallText">Control how AquoraX reacts when buttons are pressed.</p>
+  <div class="soundToggleRow">
+    <div><b>Button Sound Effects</b><p class="smallText" style="margin:4px 0 0">Soft bubble tap when pressing buttons.</p></div>
+    <input type="checkbox" id="aqxSoundToggle" onchange="saveAqxSoundSetting()">
+  </div>
+  <button type="button" class="secondary" onclick="testAqxFeedback()">Test Button Feedback</button>
+ </div>
+
+</section>
+
+<section id="settings" class="hidden"><div class="card"><div class="cardTitle"><h2>Control Centre</h2></div><button onclick="exportBackup()">Export Backup</button><button class="secondary" onclick="importInput.click()">Import Backup</button><input id="importInput" type="file" accept="application/json" class="hidden" onchange="importBackup(this)"></div>
+ 
+ 
+ <div class="card" id="dataSafetyPanel">
+  <div class="cardTitle"><h2>Data Safety</h2><span>Protected</span></div>
+  <div class="item">
+   <b>Local Backup Protection</b>
+   <p>Every save creates a safety copy before changing your reef data. Cloud save avoids duplicating large coral photos locally to prevent storage errors.</p>
+   <span class="pill" id="aqxLastSaved">Last saved: --</span>
+  </div>
+  <div class="formGrid">
+   <button onclick="exportFullAquoraXBackup()">Export Full Backup</button>
+   <button class="secondary" onclick="restoreLastSafetyBackup()">Restore Last Safety Backup</button>
+  </div>
+ </div>
+
+
+ <div class="card syncStatusCard" id="aqxSyncPanel">
+  <div class="cardTitle"><h2>Cloud Sync</h2><span id="aqxCloudStatusText">Checking</span></div>
+  <div class="item">
+   <div class="row" style="align-items:center">
+    <div>
+     <b>Account & Sync Status</b>
+     <p id="aqxAccountLine">Checking login status...</p>
+    </div>
+    <span class="syncBadge warn" id="aqxSyncBadge">🟡 Checking</span>
+   </div>
+   <div class="syncInfoGrid">
+    <div class="syncInfoBox"><small>Local Save</small><b id="aqxLocalSavedInfo">--</b></div>
+    <div class="syncInfoBox"><small>Cloud Sync</small><b id="aqxCloudSavedInfo">--</b></div>
+   </div>
+  </div>
+
+  <div class="formGrid">
+   <button onclick="aqxCloudSave()">Save to Cloud</button>
+   <button class="secondary" onclick="aqxCloudLoad()">Load from Cloud</button>
+  </div>
+
+  <div class="aqxAuthGrid">
+   <button class="secondary" onclick="aqxLogin()">Login</button>
+   <button class="secondary" onclick="aqxRegister()">Create Account</button>
+   <button class="secondary" onclick="aqxLogout()">Logout</button>
+  </div>
+
+  <p class="smallText">Cloud loading will replace current local AquoraX data after confirmation.</p>
+ </div>
+
+<div class="card form"><div class="cardTitle"><h2>Custom Parameters</h2><span id="customParamCount">0</span></div><p class="smallText">Add extra tests like iodine, copper, potassium, iron or silicate.</p><label>Parameter Name</label><input id="customParamName" placeholder="Iodine / Copper / Potassium"><div class="formGrid"><div><label>Unit</label><input id="customParamUnit" placeholder="ppm / ppb / mg/L"></div><div><label>Short Icon</label><input id="customParamIcon" placeholder="I / Cu / K"></div></div><div class="formGrid"><div><label>Ideal Low</label><input id="customIdealLow" type="number" step="any"></div><div><label>Ideal High</label><input id="customIdealHigh" type="number" step="any"></div><div><label>Warning Low</label><input id="customWarnLow" type="number" step="any"></div><div><label>Warning High</label><input id="customWarnHigh" type="number" step="any"></div></div><button onclick="addCustomParameter()">Add Custom Parameter</button></div><div class="card"><div class="cardTitle"><h2>Your Custom Parameters</h2><span>Per tank</span></div><div id="customParamList"></div></div>
+</section>
+</div>
+
+<div id="aqxToast">Tapped</div>
+<div id="imageViewer" aria-hidden="true">
+  <div class="viewerTop">
+    <div><b id="viewerTitle">Coral Photo</b><br><span id="viewerCounter">1 / 1</span></div>
+    <button class="viewerClose" type="button" onclick="closeImageViewer()">✕ Close</button>
+  </div>
+  <div class="viewerStage" id="viewerStage" onclick="toggleViewerChrome()">
+    <button class="viewerNav viewerPrev" type="button" onclick="event.stopPropagation();viewerMove(-1)">‹</button>
+    <img id="viewerImg" src="" alt="Coral photo">
+    <button class="viewerNav viewerNext" type="button" onclick="event.stopPropagation();viewerMove(1)">›</button>
+  </div>
+  <div class="viewerBottom" id="viewerBottom">
+    <b id="viewerDate"></b>
+    <p id="viewerNotes"></p>
+    <div class="viewerDots" id="viewerDots"></div>
+  </div>
+</div>
+
+<nav class="tabs"><div class="tabInner"><div class="tab active" onclick="show('home',this)"><span>⌂</span>Home</div><div class="tab" onclick="show('graphs',this)"><span>⌁</span>Graphs</div><div class="tab" onclick="show('quicktest',this)"><span>⚡</span>Quick</div><div class="tab" onclick="show('test',this)"><span>⚗</span>Test</div><div class="tab" onclick="show('dosing',this)"><span>💉</span>Dose</div><div class="tab" onclick="show('reminders',this)"><span>⏰</span>Jobs</div><div class="tab" onclick="show('growth',this)"><span>🪸</span>Corals</div><div class="tab" onclick="show('equipment',this)"><span>⚙️</span>Kit</div><div class="tab" onclick="show('customise',this)"><span>🎨</span>Style</div></div></nav>
+
+<script>
+const params=[{id:'temperature',name:'Temperature',unit:'°C',ideal:[24,26],warn:[23,27],icon:'🌡',idealText:'24–26 °C'},{id:'salinity',name:'Specific Gravity',unit:'SG',ideal:[1.024,1.026],warn:[1.023,1.027],icon:'≋',idealText:'1.024–1.026 SG'},{id:'ph',name:'pH',unit:'',ideal:[7.8,8.4],warn:[7.7,8.5],icon:'pH',idealText:'7.8–8.4'},{id:'alkalinity',name:'Alkalinity',unit:'dKH',ideal:[8,10],warn:[7,11],icon:'Alk',idealText:'8–10 dKH'},{id:'calcium',name:'Calcium',unit:'ppm',ideal:[400,460],warn:[380,480],icon:'Ca',idealText:'400–460 ppm'},{id:'magnesium',name:'Magnesium',unit:'ppm',ideal:[1250,1450],warn:[1200,1500],icon:'Mg',idealText:'1250–1450 ppm'},{id:'nitrate',name:'Nitrate',unit:'ppm',ideal:[2,25],warn:[0,50],icon:'NO₃',idealText:'2–25 ppm'},{id:'phosphate',name:'Phosphate',unit:'ppm',ideal:[0.03,0.1],warn:[0.01,0.2],icon:'PO₄',idealText:'0.03–0.1 ppm'}];
+function tankScopedKeys(){return ['reefos_tests','reefos_reminders','reefos_equipment','reefos_corals','reefos_cycle','reefos_values','reefos_doses','reefos_custom_params']}
+function readRaw(k,f){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}}
+function writeRaw(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function tanks(){return readRaw('reefos_tanks',[{id:'main',name:'My Reef',type:'Mixed Reef',litres:500}])}
+function activeTank(){return localStorage.getItem('reefos_active_tank')||'main'}
+function tankKey(k){return tankScopedKeys().includes(k)?`${k}_${activeTank()}`:k}
+function read(k,f){try{return JSON.parse(localStorage.getItem(tankKey(k))||JSON.stringify(f))}catch(e){return f}}
+function write(k,v){localStorage.setItem(tankKey(k),JSON.stringify(v))}
+function ensureTankSetup(){if(!localStorage.getItem('reefos_tanks'))writeRaw('reefos_tanks',[{id:'main',name:'My Reef',type:'Mixed Reef',litres:500}]);if(!localStorage.getItem('reefos_active_tank'))localStorage.setItem('reefos_active_tank','main');tankScopedKeys().forEach(k=>{if(localStorage.getItem(k)&&!localStorage.getItem(`${k}_main`))localStorage.setItem(`${k}_main`,localStorage.getItem(k))})}
+ensureTankSetup();
+function tests(){return read('reefos_tests',[])}function rems(){return read('reefos_reminders',[])}function equips(){return read('reefos_equipment',[])}function corals(){return read('reefos_corals',[])}function cycles(){return read('reefos_cycle',[])}function values(){return read('reefos_values',[])}function sponsors(){return read('reefos_sponsors',[])}function doses(){return read('reefos_doses',[])}function feedback(){return read('reefos_feedback',[])}function customParams(){return read('reefos_custom_params',[])}function allParams(){return params.concat(customParams())}
+function ana(k){let a=readRaw('reefos_ana',{opens:0});a[k]=(a[k]||0)+1;writeRaw('reefos_ana',a)}if(!sessionStorage.getItem('opened')){ana('opens');sessionStorage.setItem('opened','1')}
+function show(id,tab){trackFeature('open_section',{section:id});document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));if(tab)tab.classList.add('active');window.scrollTo(0,0);render()}
+function currentTank(){return tanks().find(t=>t.id===activeTank())||tanks()[0]||{id:'main',name:'My Reef',type:'Mixed Reef',litres:500}}function tankMeta(t){return `${t.type||'Mixed Reef'} • ${t.litres||0}L`}
+function switchTank(id){localStorage.setItem('reefos_active_tank',id);render();show('home')}function addTank(){let name=(newTankName.value||'').trim();if(!name){alert('Add a tank name');return}let all=tanks(),id='tank_'+Date.now();all.push({id,name,type:newTankType.value,litres:Number(newTankLitres.value||0)});writeRaw('reefos_tanks',all);localStorage.setItem('reefos_active_tank',id);newTankName.value='';newTankLitres.value='';trackFeature('add_tank_profile');render();show('home')}
+function deleteTank(id){let all=tanks();if(all.length<=1){alert('You need at least one tank profile.');return}if(!confirm('Delete this tank profile and all its saved data?'))return;let updated=all.filter(t=>t.id!==id);writeRaw('reefos_tanks',updated);tankScopedKeys().forEach(k=>localStorage.removeItem(`${k}_${id}`));if(activeTank()===id)localStorage.setItem('reefos_active_tank',updated[0].id);render();show('tanks')}
+function renderTanks(){let all=tanks(),active=currentTank();if(activeTankName)activeTankName.textContent=active.name;if(activeTankMeta)activeTankMeta.textContent=tankMeta(active);if(tankSelect)tankSelect.innerHTML=all.map(t=>`<option value="${t.id}" ${t.id===activeTank()?'selected':''}>${t.name} - ${tankMeta(t)}</option>`).join('');if(document.getElementById('tankCount'))tankCount.textContent=all.length;if(document.getElementById('tankList'))tankList.innerHTML=all.map(t=>`<div class="item"><div class="row"><b>${t.name}</b><span class="pill">${t.type}</span></div><p>${t.litres||0}L ${t.id===activeTank()?'• Active tank':''}</p><button onclick="switchTank('${t.id}')">Use This Tank</button><button class="secondary" onclick="deleteTank('${t.id}')">Delete Tank</button></div>`).join('')}
+function renderTestFields(){let c=document.getElementById('testFields');if(!c)return;c.innerHTML=allParams().map(p=>`<div><label>${p.name} ${p.unit||''}</label><input id="${p.id}" type="number" step="any" inputmode="decimal" placeholder="${p.name}"></div>`).join('')}
+function latestParamValue(id){let a=tests();for(let i=a.length-1;i>=0;i--)if(a[i][id]!==undefined&&a[i][id]!==null&&a[i][id]!=='')return a[i][id];return '--'}function latestParamDate(id){let a=tests();for(let i=a.length-1;i>=0;i--)if(a[i][id]!==undefined&&a[i][id]!==null&&a[i][id]!=='')return a[i].date||'';return ''}function latestCombinedTest(){let t={};allParams().forEach(p=>t[p.id]=latestParamValue(p.id));return t}
+function stat(p,v){if(v==='--')return '';let n=Number(v);if(n>=p.ideal[0]&&n<=p.ideal[1])return 'good';if(n>=p.warn[0]&&n<=p.warn[1])return 'warn';return 'bad'}
+function score(t){let total=0,count=0;allParams().forEach(p=>{let v=t[p.id];if(v==='--'||v===undefined)return;let x=stat(p,v);total+=x==='good'?12.5:x==='warn'?7:2;count++});return count?Math.round(total/(count*12.5)*100):'--'}
+function renderParams(){let l=latestCombinedTest(),hasAny=allParams().some(p=>l[p.id]!=='--');reefScore.textContent=score(l);paramGrid.innerHTML=allParams().map(p=>{let v=l[p.id],d=latestParamDate(p.id),col=p.id==='nitrate'?'#22f28b':p.id==='phosphate'?'#ffb02e':p.id==='ph'?'#a641ff':'#00e5ff';return `<div class="param ${stat(p,v)}"><div class="pTop"><div class="pIcon" style="color:${col}">${p.icon||'•'}</div><div class="pName">${p.name}</div></div><div class="pVal">${v}<span class="pUnit">${v==='--'?'':p.unit}</span></div><div class="pIdeal">Ideal: ${p.idealText||''}${d?`<br><small>Updated: ${d}</small>`:''}</div></div>`}).join('');statusText.textContent=hasAny?'Saved':'Ready'}
+function saveTest(){let item={date:date.value||new Date().toISOString().slice(0,10),notes:notes.value||''},savedCount=0;allParams().forEach(p=>{let el=document.getElementById(p.id);if(!el)return;let raw=(el.value||'').trim();if(raw!==''){item[p.id]=Number(raw);savedCount++}});if(savedCount===0&&!item.notes.trim()){alert('Add at least one parameter or a note before saving.');return}let a=tests();a.push(item);a.sort((x,y)=>new Date(x.date)-new Date(y.date));write('reefos_tests',a);trackFeature('save_partial_reading',{parameters_saved:savedCount});document.querySelectorAll('#test input[type=number],#test textarea').forEach(e=>e.value='');render();show('home')}
+function renderInsights(){let l=latestCombinedTest(),hasAny=allParams().some(p=>l[p.id]!=='--');if(!hasAny){insights.innerHTML='<div class="item"><b>Ready</b><p>Add any test result to generate smarter reef advice.</p></div>';return}let out=[];if(l.nitrate!=='--'&&l.nitrate>50)out.push(['🚨 Nitrate critical',`Nitrate is ${l.nitrate} ppm. Review feeding and export.`]);else if(l.nitrate!=='--'&&l.nitrate>25)out.push(['⚠️ Nitrate elevated',`Nitrate is ${l.nitrate} ppm.`]);if(l.phosphate!=='--'&&l.phosphate>0.1)out.push(['⚠️ Phosphate elevated',`Phosphate is ${l.phosphate} ppm.`]);if(l.alkalinity!=='--'&&(l.alkalinity<8||l.alkalinity>10))out.push(['⚠️ Alk check',`Alkalinity is ${l.alkalinity} dKH.`]);if(!out.length)out.push(['✅ Logged','Latest logged parameters look okay based on available readings.']);insights.innerHTML=out.map(x=>`<div class="item"><b>${x[0]}</b><p>${x[1]}</p></div>`).join('')}
+function renderHistory(){let a=tests().slice().reverse();historyList.innerHTML=a.length?a.map(t=>{let vals=allParams().filter(p=>t[p.id]!==undefined).map(p=>`${p.name}: ${t[p.id]} ${p.unit||''}`).join(' · ');return `<div class="item"><div class="row"><b>${t.date}</b><span>${vals?'Saved':'Note'}</span></div><p>${vals||'No parameters saved'}</p>${t.notes?`<p>${t.notes}</p>`:''}</div>`}).join(''):'<p style="color:var(--muted)">No tests saved yet.</p>'}
+function drawGraph(){if(!graphParam||!chart)return;let id=graphParam.value,c=chart,ctx=c.getContext('2d'),a=tests().filter(t=>t[id]!==undefined).map(t=>Number(t[id]));ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#91adc0';ctx.font='15px Arial';if(a.length<2){ctx.fillText('Add at least 2 readings for this parameter to see a graph.',25,130);return}let min=Math.min(...a),max=Math.max(...a);if(min===max){min-=1;max+=1}ctx.strokeStyle='#00e5ff';ctx.lineWidth=4;ctx.beginPath();a.forEach((v,i)=>{let x=i/(a.length-1)*c.width,y=c.height-24-((v-min)/(max-min))*(c.height-48);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
+function showEmergency(type){trackFeature('emergency_mode',{issue:type});let plans={ammonia:['Ammonia Spike',['Test ammonia again.','Stop feeding.','Increase aeration.','Controlled water change if livestock distressed.']],gasping:['Fish Gasping',['Increase oxygen now.','Point pumps at surface.','Check temperature.','Do not feed.']],coral:['Coral Crash',['Check temp, SG, alkalinity, nitrate and phosphate.','Look for recent changes.','Run fresh carbon if contamination possible.']],salinity:['Salinity Swing',['Recheck SG.','Do not correct too fast.','Check ATO and water change mix.']],heater:['Heater Failure',['Confirm with second thermometer.','Warm or cool slowly.','Check controller and thermostat.']],power:['Power Cut',['Prioritise oxygen and flow.','Use battery air pump.','Do not feed.']]};let p=plans[type];emergencyTitle.textContent=p[0];emergencyAdvice.innerHTML=`<b>${p[0]}</b><ol>${p[1].map(s=>`<li>${s}</li>`).join('')}</ol>`}
+function days(d){let n=new Date();n.setHours(0,0,0,0);let x=new Date(d);x.setHours(0,0,0,0);return Math.round((x-n)/86400000)}function dueText(n){return n<0?`${Math.abs(n)} days overdue`:n===0?'Due today':n===1?'Tomorrow':`In ${n} days`}function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+Number(n));return x.toISOString().slice(0,10)}
+function saveReminder(){let a=rems();a.push({id:Date.now()+'',type:remType.value,name:remName.value||remType.value,due:remDate.value||new Date().toISOString().slice(0,10),repeat:Number(remRepeat.value),notes:remNotes.value});write('reefos_reminders',a);remName.value='';remNotes.value='';render()}function doneRem(id){let a=rems(),i=a.findIndex(x=>x.id===id);if(i>-1){if(a[i].repeat>0)a[i].due=addDays(a[i].due,a[i].repeat);else a.splice(i,1);write('reefos_reminders',a);render()}}function renderRems(){let a=rems().sort((x,y)=>new Date(x.due)-new Date(y.due));reminderCount.textContent=a.length;remList.innerHTML=a.length?a.map(r=>`<div class="item"><div class="row"><b>${r.name}</b><span>${dueText(days(r.due))}</span></div><p>${r.type} · ${r.due}</p>${r.notes?`<p>${r.notes}</p>`:''}<button onclick="doneRem('${r.id}')">Done</button></div>`).join(''):'<p style="color:var(--muted)">No reminders yet.</p>'}
+function saveDose(){if(!doseProduct.value){alert('Add product');return}let a=doses();a.push({id:Date.now()+'',product:doseProduct.value,ml:Number(doseMl.value||0),freq:doseFreq.value,schedule:doseSchedule.value,notes:doseNotes.value});write('reefos_doses',a);doseProduct.value='';doseMl.value='';doseSchedule.value='';doseNotes.value='';render()}function renderDoses(){let a=doses();doseCount.textContent=a.length;doseTotal.textContent=a.reduce((s,x)=>s+(x.freq==='Daily'?Number(x.ml||0):0),0)+'ml/day';doseList.innerHTML=a.slice().reverse().map(d=>`<div class="item"><div class="row"><b>${d.product}</b><span>${d.ml}ml</span></div><p>${d.freq} · ${d.schedule||'No schedule'}</p>${d.notes?`<p>${d.notes}</p>`:''}</div>`).join('')||'<p style="color:var(--muted)">No dosing added yet.</p>'}
+function saveEquipment(){if(!eqName.value){alert('Add equipment name');return}let a=equips(),it={id:Date.now()+'',type:eqType.value,name:eqName.value,model:eqModel.value,price:Number(eqPrice.value||0),cleaned:eqCleaned.value||new Date().toISOString().slice(0,10),schedule:Number(eqSchedule.value),notes:eqNotes.value};a.push(it);write('reefos_equipment',a);let r=rems();r.push({id:'eq'+it.id,type:'Equipment Maintenance',name:'Clean '+it.name,due:addDays(it.cleaned,it.schedule),repeat:it.schedule,notes:it.model});write('reefos_reminders',r);eqName.value='';eqModel.value='';eqPrice.value='';eqNotes.value='';render()}function renderEquip(){let a=equips();equipTotal.textContent='£'+a.reduce((s,x)=>s+Number(x.price||0),0).toFixed(0);eqList.innerHTML=a.length?a.map(e=>`<div class="item"><div class="row"><b>${e.name}</b><span>£${e.price}</span></div><p>${e.type} · ${e.model||''}</p><p>Last cleaned: ${e.cleaned} · Next: ${addDays(e.cleaned,e.schedule)}</p>${e.notes?`<p>${e.notes}</p>`:''}</div>`).join(''):'<p style="color:var(--muted)">No equipment added yet.</p>'}
+let selectedCoral=null;
+function saveCoral(){
+  if(!coralName.value){alert('Add coral name');return}
+  let a=corals();
+  a.push({id:Date.now()+'',name:coralName.value,type:coralType.value,location:coralLocation.value,notes:coralNotes.value,photos:[]});
+  write('reefos_corals',a);
+  coralName.value='';coralLocation.value='';coralNotes.value='';render();
+}
+function openCoral(id){selectedCoral=id;show('coralDetail');renderCoralDetail()}
+function updatePhotoSelectedCount(){
+  let input=document.getElementById('photoInput'),count=document.getElementById('photoSelectedCount');
+  if(!input||!count)return;
+  let files=Array.from(input.files||[]);
+  count.textContent=files.length?`${files.length} gallery photo${files.length===1?'':'s'} selected. Tap Save Selected Gallery Photos.`:'No gallery photos selected yet. Coral Cam saves instantly after taking a photo.';
+}
+
+/* AquoraX v18 Smart Coral Image Storage
+   - LocalStorage stores thumbnails only, so mobile does not fill up after 1-2 photos.
+   - Full compressed photos live in IndexedDB and are included in chunked cloud saves.
+   - Coral Cam opens the phone camera with capture="environment". */
+const AQX_CORAL_DB='aquorax_coral_images_v18';
+const AQX_CORAL_STORE='images';
+function aqxOpenCoralDb(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(AQX_CORAL_DB,1);
+    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(AQX_CORAL_STORE))db.createObjectStore(AQX_CORAL_STORE,{keyPath:'id'})};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('IndexedDB failed'));
+  });
+}
+async function aqxPutCoralImage(record){
+  const db=await aqxOpenCoralDb();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(AQX_CORAL_STORE,'readwrite');
+    tx.objectStore(AQX_CORAL_STORE).put(record);
+    tx.oncomplete=()=>{db.close();resolve(true)};
+    tx.onerror=()=>{db.close();reject(tx.error)};
+  });
+}
+async function aqxGetCoralImage(id){
+  if(!id)return null;
+  const db=await aqxOpenCoralDb();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(AQX_CORAL_STORE,'readonly');
+    const req=tx.objectStore(AQX_CORAL_STORE).get(id);
+    req.onsuccess=()=>resolve(req.result||null);
+    req.onerror=()=>reject(req.error);
+    tx.oncomplete=()=>db.close();
+  });
+}
+async function aqxDeleteCoralImage(id){
+  if(!id)return;
+  try{
+    const db=await aqxOpenCoralDb();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(AQX_CORAL_STORE,'readwrite');
+      tx.objectStore(AQX_CORAL_STORE).delete(id);
+      tx.oncomplete=()=>{db.close();resolve(true)};
+      tx.onerror=()=>{db.close();reject(tx.error)};
+    });
+  }catch(e){console.warn('Coral image delete skipped',e)}
+}
+async function aqxAllCoralImages(){
+  try{
+    const db=await aqxOpenCoralDb();
+    return await new Promise((resolve,reject)=>{
+      const tx=db.transaction(AQX_CORAL_STORE,'readonly');
+      const req=tx.objectStore(AQX_CORAL_STORE).getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>reject(req.error);
+      tx.oncomplete=()=>db.close();
+    });
+  }catch(e){console.warn('Could not read coral image store',e);return []}
+}
+async function aqxRestoreCoralImages(records){
+  if(!Array.isArray(records)||!records.length)return;
+  const db=await aqxOpenCoralDb();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction(AQX_CORAL_STORE,'readwrite');
+    const store=tx.objectStore(AQX_CORAL_STORE);
+    records.forEach(r=>{if(r&&r.id)store.put(r)});
+    tx.oncomplete=()=>{db.close();resolve(true)};
+    tx.onerror=()=>{db.close();reject(tx.error)};
+  });
+}
+window.aqxAllCoralImages=aqxAllCoralImages;
+window.aqxRestoreCoralImages=aqxRestoreCoralImages;
+
+function aqxCompressImage(file,maxSize,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(reader.error||new Error('Photo read failed'));
+    reader.onload=e=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('Photo could not be loaded'));
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        const scale=Math.min(1,maxSize/Math.max(w,h));
+        w=Math.max(1,Math.round(w*scale));h=Math.max(1,Math.round(h*scale));
+        const canvas=document.createElement('canvas');
+        canvas.width=w;canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',quality));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function aqxPhotoSrc(p){return (p&&(p.thumb||p.img))||''}
+async function aqxHydrateCoralImages(root){
+  if(!root)return;
+  const imgs=root.querySelectorAll('img[data-image-id]');
+  imgs.forEach(async img=>{
+    const id=img.getAttribute('data-image-id');
+    if(!id)return;
+    try{const rec=await aqxGetCoralImage(id);if(rec&&rec.data)img.src=rec.data}catch(e){}
+  });
+}
+
+
+/* AquoraX v21 reliable coral viewer - no JSON in onclick */
+let aqxViewerPhotos=[];
+let aqxViewerIndex=0;
+let aqxViewerCoralName='Coral Photo';
+
+async function aqxViewerPhotoSrc(photo){
+  if(!photo)return '';
+  if(photo.imageId){
+    try{
+      const rec=await aqxGetCoralImage(photo.imageId);
+      if(rec&&rec.data)return rec.data;
+    }catch(e){console.warn('Viewer full image load failed',e)}
+  }
+  return aqxPhotoSrc(photo);
+}
+
+async function openImageViewerFromCoral(coralId,index){
+  const coral=corals().find(x=>x.id===coralId);
+  if(!coral||!(coral.photos||[]).length){return;}
+  aqxViewerPhotos=(coral.photos||[]).slice();
+  aqxViewerCoralName=coral.name||'Coral Photo';
+  aqxViewerIndex=Math.max(0,Math.min(Number(index)||0,aqxViewerPhotos.length-1));
+  const viewer=document.getElementById('imageViewer');
+  if(!viewer)return;
+  viewer.classList.add('show');
+  viewer.classList.remove('viewerChromeHidden');
+  viewer.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  await renderImageViewer();
+}
+
+async function renderImageViewer(){
+  const photo=aqxViewerPhotos[aqxViewerIndex];
+  const img=document.getElementById('viewerImg');
+  if(!img||!photo)return;
+  document.getElementById('viewerTitle').textContent=aqxViewerCoralName;
+  document.getElementById('viewerCounter').textContent=(aqxViewerIndex+1)+' / '+aqxViewerPhotos.length;
+  document.getElementById('viewerDate').textContent=photo.date||'';
+  document.getElementById('viewerNotes').textContent=photo.notes||'';
+  document.getElementById('viewerDots').innerHTML=aqxViewerPhotos.map((_,i)=>`<span class="viewerDot ${i===aqxViewerIndex?'active':''}"></span>`).join('');
+  img.src=aqxPhotoSrc(photo);
+  const full=await aqxViewerPhotoSrc(photo);
+  if(aqxViewerPhotos[aqxViewerIndex]===photo && full)img.src=full;
+}
+
+function viewerMove(dir){
+  if(!aqxViewerPhotos.length)return;
+  aqxViewerIndex=(aqxViewerIndex+dir+aqxViewerPhotos.length)%aqxViewerPhotos.length;
+  renderImageViewer();
+}
+
+function closeImageViewer(){
+  const viewer=document.getElementById('imageViewer');
+  if(viewer){viewer.classList.remove('show');viewer.setAttribute('aria-hidden','true');}
+  document.body.style.overflow='';
+}
+
+function toggleViewerChrome(){
+  const viewer=document.getElementById('imageViewer');
+  if(viewer)viewer.classList.toggle('viewerChromeHidden');
+}
+
+document.addEventListener('keydown',e=>{
+  const viewer=document.getElementById('imageViewer');
+  if(!viewer||!viewer.classList.contains('show'))return;
+  if(e.key==='Escape')closeImageViewer();
+  if(e.key==='ArrowLeft')viewerMove(-1);
+  if(e.key==='ArrowRight')viewerMove(1);
+});
+
+let aqxViewerTouchStartX=0;
+document.addEventListener('touchstart',e=>{
+  const viewer=document.getElementById('imageViewer');
+  if(viewer&&viewer.classList.contains('show'))aqxViewerTouchStartX=e.touches[0].clientX;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  const viewer=document.getElementById('imageViewer');
+  if(!viewer||!viewer.classList.contains('show'))return;
+  const dx=e.changedTouches[0].clientX-aqxViewerTouchStartX;
+  if(Math.abs(dx)>55)viewerMove(dx>0?-1:1);
+},{passive:true});
+
+async function savePhotoFromInput(inputId){
+  try{
+    const input=document.getElementById(inputId);
+    const files=Array.from((input&&input.files)||[]);
+    if(!files.length)return;
+    const a=corals(),c=a.find(x=>x.id===selectedCoral);
+    if(!c){alert('Coral not found. Go back and reopen the coral.');return}
+    c.photos=c.photos||[];
+    let before=c.photos.slice();
+    let date=(photoDate.value||new Date().toISOString().slice(0,10));
+    let notes=photoNotes.value||'';
+    let saved=0;
+    for(let file of files){
+      if(!file.type.startsWith('image/'))continue;
+      const id='photo_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+      const full=await aqxCompressImage(file,1600,.74);
+      const thumb=await aqxCompressImage(file,300,.55);
+      await aqxPutCoralImage({id,coralId:selectedCoral,tankId:activeTank(),data:full,thumb,createdAt:new Date().toISOString()});
+      c.photos.push({id,date,notes,thumb,imageId:id,storage:'indexeddb'});
+      saved++;
+    }
+    if(!saved){alert('No valid image found.');return}
+    try{write('reefos_corals',a)}catch(storageErr){
+      c.photos=before;write('reefos_corals',a);
+      console.error(storageErr);
+      alert('Local preview storage is full. Export a backup and delete old coral photos, then try again.');
+      return;
+    }
+    input.value='';
+    if(inputId==='photoInput')updatePhotoSelectedCount();
+    if(inputId==='coralCameraInput')photoNotes.value='';
+    renderCoralDetail();renderCorals();
+    if(typeof aqxToastShow==='function')aqxToastShow(saved+' photo'+(saved===1?'':'s')+' added');else alert('Photos added');
+  }catch(err){
+    console.error(err);
+    alert('Photo upload failed. Try a smaller photo or screenshot.');
+  }
+}
+async function savePhoto(){return savePhotoFromInput('photoInput')}
+function renderCorals(){
+  let a=corals();coralCount.textContent=a.length;
+  coralList.innerHTML=a.length?a.map(c=>{
+    let p=c.photos||[],first=p[0],last=p[p.length-1];
+    let preview=p.length===0
+      ? `<div class="photo"><div style="padding:20px;text-align:center;color:#91adc0">No photos yet</div></div>`
+      : `<div class="photoGrid"><div class="photo">${first?`<img src="${aqxPhotoSrc(first)}" data-image-id="${first.imageId||''}" onclick="openImageViewerFromCoral('${c.id}',0)">`:'<div>First photo</div>'}</div><div class="photo">${last?`<img src="${aqxPhotoSrc(last)}" data-image-id="${last.imageId||''}" onclick="openImageViewerFromCoral('${c.id}',${p.length-1})">`:'<div>Latest photo</div>'}</div></div>`;
+    return `<div class="item"><h3>${c.name}</h3><span class="pill">${c.type}</span><p>${c.location||''}</p><p>${p.length} photo${p.length===1?'':'s'}</p>${preview}<button onclick="openCoral('${c.id}')">View / Add Photos</button><button class="danger" onclick="deleteCoral('${c.id}')">Delete Coral</button></div>`
+  }).join(''):'<p style="color:var(--muted)">No corals yet.</p>';
+  setTimeout(()=>aqxHydrateCoralImages(coralList),50);
+}
+function deletePhoto(id){
+  if(!selectedCoral)return;
+  if(!confirm('Delete this coral photo?'))return;
+  let a=corals(),c=a.find(x=>x.id===selectedCoral);
+  let photo=(c.photos||[]).find(p=>p.id===id);
+  c.photos=(c.photos||[]).filter(p=>p.id!==id);
+  write('reefos_corals',a);
+  aqxDeleteCoralImage((photo&&photo.imageId)||id);
+  renderCoralDetail();renderCorals();
+}
+
+async function deleteCoral(id){
+  const a=corals();
+  const c=a.find(x=>x.id===id);
+  if(!c){alert('Coral not found');return;}
+  const count=(c.photos||[]).length;
+  const msg=count
+    ? `Delete ${c.name} and all ${count} photo${count===1?'':'s'}? This cannot be undone.`
+    : `Delete ${c.name}? This cannot be undone.`;
+  if(!confirm(msg))return;
+
+  // Remove full-size stored coral images from IndexedDB first
+  try{
+    for(const p of (c.photos||[])){
+      await aqxDeleteCoralImage((p&&p.imageId)||p.id);
+    }
+  }catch(err){
+    console.warn('Coral image cleanup failed',err);
+  }
+
+  write('reefos_corals',a.filter(x=>x.id!==id));
+
+  if(selectedCoral===id){
+    selectedCoral=null;
+    show('growth');
+  }
+
+  if(typeof aqxToastShow==='function')aqxToastShow('Coral deleted');
+  renderCorals();
+}
+function renderCoralDetail(){
+  let c=corals().find(x=>x.id===selectedCoral);if(!c)return;
+  detailTitle.textContent=c.name;detailMeta.textContent=`${c.type} · ${c.location||''}`;
+  const photos=c.photos||[];
+  photoCount.textContent=photos.length+' photo'+(photos.length===1?'':'s');
+  const first=photos[0],last=photos[photos.length-1];
+  const comparison=photos.length>1?`
+    <div style="grid-column:1/-1">
+      <div class="cardTitle"><h2>Growth Comparison</h2><span>First vs Latest</span></div>
+      <p class="viewerTapHint">Tap either photo to open full screen. Swipe left/right in the viewer.</p>
+      <div class="growthCompareGrid">
+        <div class="growthCompareCard">
+          <img src="${aqxPhotoSrc(first)}" data-image-id="${first.imageId||''}" onclick="openImageViewerFromCoral('${c.id}',0)">
+          <div><b>First Photo</b><small>${first.date||''}</small></div>
+        </div>
+        <div class="growthCompareCard">
+          <img src="${aqxPhotoSrc(last)}" data-image-id="${last.imageId||''}" onclick="openImageViewerFromCoral('${c.id}',${photos.length-1})">
+          <div><b>Latest Photo</b><small>${last.date||''}</small></div>
+        </div>
+      </div>
+      <div class="cardTitle"><h2>Full Timeline</h2><span>${photos.length} photos</span></div>
+    </div>`:'';
+  const timeline=photos.length?photos.slice().reverse().map((p,index)=>{
+    const realIndex=photos.length-1-index;
+    return `<div class="photo"><img src="${aqxPhotoSrc(p)}" data-image-id="${p.imageId||''}" onclick="openImageViewerFromCoral('${c.id}',${realIndex})"><div><b>${p.date}</b><p>${p.notes||''}</p><button class="danger" onclick="deletePhoto('${p.id}')">Delete Photo</button></div></div>`;
+  }).join(''):'<p style="color:var(--muted)">No photos yet.</p>';
+  photoList.innerHTML=comparison+timeline;
+  setTimeout(()=>aqxHydrateCoralImages(photoList),50);
+}
+function createGrowthReminder(d){let a=rems();a.push({id:Date.now()+'',type:'Coral Growth Photo',name:d===7?'Weekly coral growth photo':'Monthly coral growth photo',due:addDays(new Date().toISOString().slice(0,10),d),repeat:d,notes:'Take the same angle photo to track coral growth.'});write('reefos_reminders',a);alert('Growth reminder added');render()}
+function saveCycle(){let a=cycles();a.push({id:Date.now()+'',start:cycleStart.value,date:cycleDate.value||new Date().toISOString().slice(0,10),ammonia:Number(ammonia.value||0),nitrite:Number(nitrite.value||0),nitrate:Number(cycleNitrate.value||0),used:cycleUsed.value,notes:cycleNotes.value});write('reefos_cycle',a);ammonia.value='';nitrite.value='';cycleNitrate.value='';cycleUsed.value='';cycleNotes.value='';render()}function renderCycle(){let a=cycles(),l=a[a.length-1];cycleStage.textContent=l?(l.ammonia>.25?'Starting':l.nitrite>.25?'Nitrite phase':l.nitrate>2?'Nearly cycled':'Tracking'):'Start';cycleList.innerHTML=a.slice().reverse().map(x=>`<div class="item"><div class="row"><b>${x.date}</b><span>NH3 ${x.ammonia} · NO2 ${x.nitrite} · NO3 ${x.nitrate}</span></div>${x.used?`<p>Used: ${x.used}</p>`:''}${x.notes?`<p>${x.notes}</p>`:''}</div>`).join('')||'<p style="color:var(--muted)">No cycle readings yet.</p>';drawCycle()}function drawCycle(){let c=cycleChart,ctx=c.getContext('2d'),a=cycles();ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#91adc0';ctx.font='15px Arial';if(a.length<2){ctx.fillText('Add 2 cycle readings to see a graph.',25,130);return}let vals=[...a.map(x=>x.ammonia),...a.map(x=>x.nitrite),...a.map(x=>x.nitrate)],max=Math.max(...vals,1);['ammonia','nitrite','nitrate'].forEach((key,idx)=>{ctx.strokeStyle=['#00e5ff','#ffb02e','#22f28b'][idx];ctx.beginPath();a.forEach((r,i)=>{let x=i/(a.length-1)*c.width,y=c.height-24-(Number(r[key])/max)*(c.height-48);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()})}
+function saveValue(){if(!valueName.value){alert('Add item');return}let a=values();a.push({id:Date.now()+'',cat:valueCat.value,name:valueName.value,price:Number(valuePrice.value||0),date:valueDate.value||new Date().toISOString().slice(0,10),notes:valueNotes.value});write('reefos_values',a);valueName.value='';valuePrice.value='';valueNotes.value='';render()}function renderValue(){let a=values();valueTotal.textContent='£'+a.reduce((s,x)=>s+x.price,0).toFixed(0);valueList.innerHTML=a.map(x=>`<div class="item"><div class="row"><b>${x.name}</b><span>£${x.price}</span></div><span class="pill">${x.cat}</span><p>${x.date}</p>${x.notes?`<p>${x.notes}</p>`:''}</div>`).join('')||'<p style="color:var(--muted)">No value items yet.</p>'}
+function saveSponsor(){if(!sponsorName.value||!sponsorUrl.value){alert('Add name and website');return}let a=sponsors(),url=sponsorUrl.value.startsWith('http')?sponsorUrl.value:'https://'+sponsorUrl.value;a.push({id:Date.now()+'',name:sponsorName.value,cat:sponsorCat.value,url,code:sponsorCode.value,desc:sponsorDesc.value});write('reefos_sponsors',a);sponsorName.value='';sponsorUrl.value='';sponsorCode.value='';sponsorDesc.value='';render()}function renderSponsors(){sponsorCount.textContent=sponsors().length;sponsorList.innerHTML=sponsors().map(s=>`<div class="item"><div class="row"><b>${s.name}</b><span class="pill">${s.cat}</span></div>${s.desc?`<p>${s.desc}</p>`:''}${s.code?`<p>Offer: ${s.code}</p>`:''}<button onclick="window.open('${s.url}','_blank')">Visit Website</button></div>`).join('')||'<p style="color:var(--muted)">No sponsors added yet.</p>'}
+function saveFeedback(){if(!feedbackText.value.trim()){alert('Add feedback');return}let a=feedback();a.push({id:Date.now()+'',date:new Date().toLocaleString(),text:feedbackText.value});write('reefos_feedback',a);feedbackText.value='';render()}function renderFeedback(){feedbackList.innerHTML=feedback().slice().reverse().map(f=>`<div class="item"><b>${f.date}</b><p>${f.text}</p></div>`).join('')||'<p style="color:var(--muted)">No feedback saved yet.</p>'}
+function sanitizeParamId(name){return 'custom_'+String(name).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'')+'_'+Date.now()}function addCustomParameter(){let name=(customParamName.value||'').trim();if(!name){alert('Add a parameter name');return}if(customIdealLow.value===''||customIdealHigh.value===''){alert('Add ideal low and high');return}let unit=customParamUnit.value||'',icon=customParamIcon.value||name.slice(0,2),idealLow=Number(customIdealLow.value),idealHigh=Number(customIdealHigh.value),warnLow=customWarnLow.value===''?idealLow:Number(customWarnLow.value),warnHigh=customWarnHigh.value===''?idealHigh:Number(customWarnHigh.value),cp=customParams();cp.push({id:sanitizeParamId(name),name,unit,icon,ideal:[idealLow,idealHigh],warn:[warnLow,warnHigh],idealText:`${idealLow}–${idealHigh}${unit?' '+unit:''}`,custom:true});write('reefos_custom_params',cp);customParamName.value='';customParamUnit.value='';customParamIcon.value='';customIdealLow.value='';customIdealHigh.value='';customWarnLow.value='';customWarnHigh.value='';render()}function deleteCustomParameter(id){if(!confirm('Delete this custom parameter?'))return;write('reefos_custom_params',customParams().filter(p=>p.id!==id));render()}function renderCustomParams(){customParamCount.textContent=customParams().length;customParamList.innerHTML=customParams().length?customParams().map(p=>`<div class="item"><div class="row"><b>${p.icon||'•'} ${p.name}</b><span class="pill">${p.unit||'no unit'}</span></div><p>Ideal: ${p.idealText} · Warning: ${p.warn[0]}–${p.warn[1]}${p.unit?' '+p.unit:''}</p><button class="danger" onclick="deleteCustomParameter('${p.id}')">Delete Parameter</button></div>`).join(''):'<p style="color:var(--muted)">No custom parameters yet.</p>'}
+function getTheme(){try{return JSON.parse(localStorage.getItem('reefos_theme')||'{}')}catch(e){return {}}}function setTheme(t){try{localStorage.setItem('reefos_theme',JSON.stringify(t));return true}catch(e){alert('Theme image is too large. Try a screenshot or smaller image.');return false}}function applyPresetTheme(color){let t=getTheme();t.accent=color;if(setTheme(t)){applyTheme();renderAqxSoundSetting();themeColor.value=color}}function compressImage(file,cb){let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let max=1400,w=img.width,h=img.height;if(w>h&&w>max){h=Math.round(h*(max/w));w=max}else if(h>=w&&h>max){w=Math.round(w*(max/h));h=max}let c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',.72))};img.src=e.target.result};r.readAsDataURL(file)}function saveTheme(){let color=themeColor.value,dim=Number(bgBrightness.value),file=bgUpload.files[0],existing=getTheme();function finish(bg){let theme={...existing,accent:color,dim};if(bg)theme.bg=bg;if(setTheme(theme)){applyTheme();themeStatus.textContent='Theme saved successfully.';alert('Theme saved')}}if(file)compressImage(file,finish);else finish(existing.bg)}function applyTheme(){let t=getTheme(),root=document.documentElement;if(t.accent)root.style.setProperty('--cyan',t.accent);if(t.bg){document.body.classList.add('customBg');document.body.style.background=`url(${t.bg}) center/cover fixed, linear-gradient(180deg,#020814,#000 88%)`;root.style.setProperty('--bgDim',String(t.dim??.25))}else document.body.classList.remove('customBg');if(document.getElementById('themeColor')&&t.accent)themeColor.value=t.accent;if(document.getElementById('bgBrightness')&&t.dim!==undefined)bgBrightness.value=t.dim}function clearBackgroundOnly(){let t=getTheme();delete t.bg;if(setTheme(t))applyTheme()}function resetTheme(){if(!confirm('Reset AquoraX theme?'))return;localStorage.removeItem('reefos_theme');location.reload()}
+function renderAnalytics(){let a=readRaw('reefos_ana',{opens:0});anaOpens.textContent=a.opens||0;anaTests.textContent=tests().length;anaCorals.textContent=corals().length;anaEquip.textContent=equips().length;anaDoses.textContent=doses().length;anaRems.textContent=rems().length}function shareAquoraX(){let link=location.origin+location.pathname;if(navigator.share)navigator.share({title:'AquoraX',text:'AquoraX - Smart Reef Management',url:link});else navigator.clipboard.writeText(link).then(()=>alert('AquoraX link copied'))}function exportBackup(){let data={};Object.keys(localStorage).forEach(k=>{if(k.startsWith('reefos_'))data[k]=localStorage.getItem(k)});let b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='AquoraX_Backup.json';a.click()}function importBackup(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{let d=JSON.parse(r.result);Object.entries(d).forEach(([k,v])=>localStorage.setItem(k,v));location.reload()};r.readAsText(f)}
+
+const dashboardBlocks=[
+ {id:'tank',label:'Tank Profile'},
+ {id:'hero',label:'Intro Banner'},
+ {id:'score',label:'Reef Health Score'},
+ {id:'parameters',label:'Current Parameters'},
+ {id:'insights',label:'Smart Insights'},
+ {id:'share',label:'Share AquoraX'},
+ {id:'tools',label:'AquoraX Tools'}
+];
+function defaultDashboardLayout(){
+ return dashboardBlocks.map(b=>({id:b.id,show:true}));
+}
+function dashboardLayout(){
+ const saved=readRaw('aquorax_dashboard_layout',null);
+ if(!saved)return defaultDashboardLayout();
+ const ids=saved.map(x=>x.id);
+ const missing=dashboardBlocks.filter(b=>!ids.includes(b.id)).map(b=>({id:b.id,show:true}));
+ return saved.concat(missing);
+}
+function writeDashboardLayout(layout){
+ writeRaw('aquorax_dashboard_layout',layout);
+}
+function renderDashboardLayoutControls(){
+ const el=document.getElementById('dashboardLayoutList');
+ if(!el)return;
+ const layout=dashboardLayout();
+ el.innerHTML=layout.map((item,i)=>{
+  const meta=dashboardBlocks.find(b=>b.id===item.id)||{label:item.id};
+  return `<div class="layoutRow">
+    <input class="layoutToggle" type="checkbox" id="dash_${item.id}" ${item.show?'checked':''}>
+    <b>${meta.label}</b>
+    <button type="button" class="secondary" onclick="moveDashboardBlock('${item.id}',-1)">↑</button>
+    <button type="button" class="secondary" onclick="moveDashboardBlock('${item.id}',1)">↓</button>
+  </div>`;
+ }).join('');
+}
+function saveDashboardLayout(){
+ const layout=dashboardLayout().map(item=>({
+  id:item.id,
+  show:document.getElementById('dash_'+item.id)?.checked ?? true
+ }));
+ writeDashboardLayout(layout);
+ applyDashboardLayout();
+ if(typeof trackFeature==='function')trackFeature('save_dashboard_layout');
+ alert('Dashboard layout saved');
+}
+function moveDashboardBlock(id,dir){
+ const layout=dashboardLayout();
+ const i=layout.findIndex(x=>x.id===id);
+ const j=i+dir;
+ if(i<0||j<0||j>=layout.length)return;
+ [layout[i],layout[j]]=[layout[j],layout[i]];
+ writeDashboardLayout(layout);
+ renderDashboardLayoutControls();
+ applyDashboardLayout();
+}
+function resetDashboardLayout(){
+ if(!confirm('Reset dashboard layout?'))return;
+ localStorage.removeItem('aquorax_dashboard_layout');
+ renderDashboardLayoutControls();
+ applyDashboardLayout();
+}
+function applyDashboardLayout(){
+ const container=document.getElementById('homeBlockContainer');
+ if(!container)return;
+ const layout=dashboardLayout();
+ layout.forEach(item=>{
+  const block=document.querySelector(`.homeBlock[data-block="${item.id}"]`);
+  if(!block)return;
+  block.style.display=item.show?'':'none';
+  container.appendChild(block);
+ });
+}
+
+
+let selectedQuickParam=null;
+function quickParamIds(){
+ return ['alkalinity','nitrate','phosphate','salinity','ph','temperature'];
+}
+function quickParams(){
+ const ids=quickParamIds();
+ const base=allParams();
+ const main=ids.map(id=>base.find(p=>p.id===id)).filter(Boolean);
+ const custom=customParams().slice(0,4);
+ return main.concat(custom);
+}
+function selectQuickTest(id){
+ const p=allParams().find(x=>x.id===id);
+ if(!p)return;
+ selectedQuickParam=p;
+ if(document.getElementById('quickTestTitle'))quickTestTitle.textContent=p.name;
+ if(document.getElementById('quickTestUnit'))quickTestUnit.textContent=p.unit||'value';
+ if(document.getElementById('quickTestHint')){
+  const last=latestParamValue(p.id);
+  const date=latestParamDate(p.id);
+  quickTestHint.textContent=last==='--' ? 'No previous reading saved.' : `Last reading: ${last}${p.unit?' '+p.unit:''}${date?' on '+date:''}`;
+ }
+ if(document.getElementById('quickTestValue'))quickTestValue.value='';
+ renderQuickTestGrid();
+ setTimeout(()=>document.getElementById('quickTestValue')?.focus(),50);
+}
+function renderQuickTestGrid(){
+ const el=document.getElementById('quickTestGrid');
+ if(!el)return;
+ el.innerHTML=quickParams().map(p=>{
+  const last=latestParamValue(p.id);
+  const date=latestParamDate(p.id);
+  const active=selectedQuickParam && selectedQuickParam.id===p.id;
+  return `<div class="tool ${active?'quickSelected':''}" onclick="selectQuickTest('${p.id}')">
+    <b>${p.icon||'•'} ${p.name}</b>
+    <p>${p.idealText||''}</p>
+    <div class="quickLast">${last==='--'?'No reading yet':`Last: ${last}${p.unit?' '+p.unit:''}${date?' · '+date:''}`}</div>
+  </div>`;
+ }).join('');
+}
+function saveQuickTest(){
+ if(!selectedQuickParam){
+  alert('Choose a test first');
+  return;
+ }
+ const raw=(document.getElementById('quickTestValue')?.value||'').trim();
+ if(raw===''){
+  alert('Enter a value');
+  return;
+ }
+ const num=Number(raw);
+ if(Number.isNaN(num)){
+  alert('Check the value');
+  return;
+ }
+ let item={
+  date:(document.getElementById('quickTestDate')?.value)||new Date().toISOString().slice(0,10),
+  notes:(document.getElementById('quickTestNotes')?.value)||''
+ };
+ item[selectedQuickParam.id]=num;
+ let a=tests();
+ a.push(item);
+ a.sort((x,y)=>new Date(x.date)-new Date(y.date));
+ write('reefos_tests',a);
+ if(typeof trackFeature==='function')trackFeature('save_quick_test',{parameter:selectedQuickParam.id});
+ quickTestValue.value='';
+ quickTestNotes.value='';
+ render();
+ alert(`${selectedQuickParam.name} saved`);
+}
+
+
+function aqxSoundsEnabled(){
+  return localStorage.getItem('aquorax_sound_effects') === 'on';
+}
+function saveAqxSoundSetting(){
+  const on = document.getElementById('aqxSoundToggle')?.checked;
+  localStorage.setItem('aquorax_sound_effects', on ? 'on' : 'off');
+  showAqxToast(on ? 'Sounds on' : 'Sounds off');
+  if(on) playAqxTapSound();
+}
+function renderAqxSoundSetting(){
+  const el=document.getElementById('aqxSoundToggle');
+  if(el) el.checked = aqxSoundsEnabled();
+}
+function playAqxTapSound(){
+  if(!aqxSoundsEnabled()) return;
+  try{
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if(!AudioContext) return;
+    if(!window.aqxAudioCtx) window.aqxAudioCtx = new AudioContext();
+    const ctx = window.aqxAudioCtx;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(620, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(260, ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.035, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.10);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.11);
+  }catch(e){}
+}
+function showAqxToast(msg){
+  const t=document.getElementById('aqxToast');
+  if(!t) return;
+  t.textContent=msg||'Done';
+  t.classList.add('show');
+  clearTimeout(window.aqxToastTimer);
+  window.aqxToastTimer=setTimeout(()=>t.classList.remove('show'),900);
+}
+function addAqxRipple(el,ev){
+  if(!el) return;
+  el.classList.add('aqxPressed');
+  setTimeout(()=>el.classList.remove('aqxPressed'),140);
+
+  const r=document.createElement('span');
+  r.className='aqxRipple';
+  const rect=el.getBoundingClientRect();
+  const x=ev && ev.clientX ? ev.clientX-rect.left : rect.width/2;
+  const y=ev && ev.clientY ? ev.clientY-rect.top : rect.height/2;
+  r.style.left=x+'px';
+  r.style.top=y+'px';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(),600);
+}
+function testAqxFeedback(){
+  playAqxTapSound();
+  showAqxToast('Button feedback working');
+  if(navigator.vibrate) navigator.vibrate(18);
+}
+document.addEventListener('pointerdown',function(ev){
+  const el=ev.target.closest('button,.tool,.tab,.iconBtn');
+  if(!el) return;
+  addAqxRipple(el,ev);
+  playAqxTapSound();
+  if(navigator.vibrate) navigator.vibrate(10);
+},{passive:true});
+
+document.addEventListener('click',function(ev){
+  const el=ev.target.closest('button');
+  if(!el) return;
+  const txt=(el.textContent||'').trim().toLowerCase();
+  if(txt.includes('save')) showAqxToast('Saving...');
+  else if(txt.includes('login')) showAqxToast('Logging in...');
+  else if(txt.includes('logout')) showAqxToast('Logging out...');
+  else if(txt.includes('load')) showAqxToast('Loading...');
+  else if(txt.includes('create')) showAqxToast('Creating...');
+  else if(txt.includes('delete')) showAqxToast('Deleting...');
+  else showAqxToast('Tapped');
+},true);
+
+function render(){renderTestFields();[date,quickTestDate,remDate,eqCleaned,photoDate,cycleStart,cycleDate,valueDate].forEach(el=>{if(el&&!el.value)el.value=new Date().toISOString().slice(0,10)});if(graphParam){let cur=graphParam.value;graphParam.innerHTML='';allParams().forEach(p=>graphParam.add(new Option(p.name,p.id)));if(cur)graphParam.value=cur}renderTanks();renderParams();renderInsights();renderHistory();renderRems();renderDoses();renderEquip();renderCorals();renderCycle();renderValue();renderSponsors();renderFeedback();renderAnalytics();renderCustomParams();renderDashboardLayoutControls();applyDashboardLayout();drawGraph();applyTheme()}
+
+if('serviceWorker' in navigator){
+ navigator.serviceWorker.register('./sw.js').then(reg=>reg.update()).catch(()=>{});
+}
+
+render();
+</script>
+
+<script>
+/* AquoraX Chunked Cloud Sync Controller v13 - No Local Backup Duplication */
+(function(){
+  const AQX_CLOUD_LAST_SYNC_KEY = "aquorax_cloud_last_sync_v1";
+  const CHUNK_SIZE = 650000;
+
+  window.aqxAuthReady = window.aqxAuthReady || false;
+  window.aqxCurrentUser = window.aqxCurrentUser || null;
+
+  function formatTime(iso){
+    if(!iso) return "--";
+    try { return new Date(iso).toLocaleString(); } catch(e){ return iso; }
+  }
+
+  function allLocalData(){
+    const data = {};
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k) data[k] = localStorage.getItem(k);
+    }
+    return data;
+  }
+
+  function ready(){
+    return Boolean(window.aqxFirebaseReady && window.aqxAuth && window.aqxDb && window.aqxFirebaseTools);
+  }
+
+  function user(){
+    return (window.aqxAuth && window.aqxAuth.currentUser) || window.aqxCurrentUser || null;
+  }
+
+  function countSnapshot(data){
+    const counts = { tanks:0, tests:0, corals:0, photos:0, equipment:0, reminders:0 };
+    try{
+      if(data["reefos_tanks"]) counts.tanks = JSON.parse(data["reefos_tanks"]).length || 0;
+      Object.keys(data).forEach(k=>{
+        try{
+          if(k.startsWith("reefos_tests_")) counts.tests += JSON.parse(data[k] || "[]").length || 0;
+          if(k.startsWith("reefos_equipment_")) counts.equipment += JSON.parse(data[k] || "[]").length || 0;
+          if(k.startsWith("reefos_reminders_")) counts.reminders += JSON.parse(data[k] || "[]").length || 0;
+          if(k.startsWith("reefos_corals_")){
+            const cs = JSON.parse(data[k] || "[]");
+            counts.corals += cs.length || 0;
+            cs.forEach(c => counts.photos += ((c.photos || []).length || 0));
+          }
+        }catch(e){}
+      });
+    }catch(e){}
+    return counts;
+  }
+
+  function splitString(str){
+    const chunks = [];
+    for(let i=0;i<str.length;i+=CHUNK_SIZE){
+      chunks.push(str.slice(i, i + CHUNK_SIZE));
+    }
+    return chunks;
+  }
+
+  function safeCloudMarker(reason){
+    try{
+      localStorage.setItem("aquorax_last_cloud_action", JSON.stringify({
+        reason: reason || "cloud action",
+        at: new Date().toISOString()
+      }));
+    }catch(e){
+      console.warn("Cloud marker skipped due to storage quota", e);
+    }
+  }
+
+  window.aqxSetSyncBadge = function(state, text){
+    const badge = document.getElementById("aqxSyncBadge");
+    if(!badge) return;
+    badge.classList.remove("good","warn","bad");
+    badge.classList.add(state || "warn");
+    badge.textContent = text || "🟡 Checking";
+  };
+
+  window.aqxRenderSyncUI = function(){
+    const u = user();
+    const account = document.getElementById("aqxAccountLine");
+    const local = document.getElementById("aqxLocalSavedInfo");
+    const cloud = document.getElementById("aqxCloudSavedInfo");
+    const header = document.getElementById("aqxCloudStatusText");
+
+    const localSaved = localStorage.getItem("aquorax_last_saved_v1") || localStorage.getItem("aquorax_last_saved");
+    const cloudSaved = localStorage.getItem(AQX_CLOUD_LAST_SYNC_KEY);
+
+    if(local) local.textContent = formatTime(localSaved);
+    if(cloud) cloud.textContent = formatTime(cloudSaved);
+
+    if(!window.aqxFirebaseReady){
+      if(account) account.textContent = "Firebase not ready";
+      if(header) header.textContent = "Not Ready";
+      aqxSetSyncBadge("bad","🔴 Firebase not ready");
+      return;
+    }
+
+    if(!window.aqxAuthReady){
+      if(account) account.textContent = "Checking login status...";
+      if(header) header.textContent = "Checking";
+      aqxSetSyncBadge("warn","🟡 Checking");
+      return;
+    }
+
+    if(u){
+      if(account) account.textContent = "Logged in as " + (u.email || "AquoraX user");
+      const synced = !!cloudSaved;
+      if(header) header.textContent = synced ? "Synced" : "Logged In";
+      aqxSetSyncBadge(synced ? "good" : "warn", synced ? "🟢 Synced / Ready" : "🟡 Logged in");
+      return;
+    }
+
+    if(account) account.textContent = "Not logged in";
+    if(header) header.textContent = "Offline";
+    aqxSetSyncBadge("warn","🟡 Offline / Local only");
+  };
+
+  window.aqxLogin = async function(){
+    try{
+      if(!ready()){ alert("Firebase is still starting. Wait 2 seconds and try again."); return; }
+      const email = prompt("Enter your AquoraX email"); if(!email) return;
+      const password = prompt("Enter your password"); if(!password) return;
+      aqxSetSyncBadge("warn","🟡 Logging in...");
+      const result = await window.aqxFirebaseTools.signInWithEmailAndPassword(window.aqxAuth, email, password);
+      window.aqxAuthReady = true;
+      window.aqxCurrentUser = result.user || window.aqxAuth.currentUser || null;
+      aqxRenderSyncUI();
+      if(typeof showAqxToast === "function") showAqxToast("Logged in");
+    }catch(e){
+      alert("Login failed: " + (e.message || e));
+      aqxRenderSyncUI();
+    }
+  };
+
+  window.aqxRegister = async function(){
+    try{
+      if(!ready()){ alert("Firebase is still starting. Wait 2 seconds and try again."); return; }
+      const email = prompt("Create account email"); if(!email) return;
+      const password = prompt("Create a password - minimum 6 characters"); if(!password) return;
+      if(password.length < 6){ alert("Password must be at least 6 characters."); return; }
+      aqxSetSyncBadge("warn","🟡 Creating account...");
+      const result = await window.aqxFirebaseTools.createUserWithEmailAndPassword(window.aqxAuth, email, password);
+      window.aqxAuthReady = true;
+      window.aqxCurrentUser = result.user || window.aqxAuth.currentUser || null;
+      aqxRenderSyncUI();
+      if(typeof showAqxToast === "function") showAqxToast("Account created");
+    }catch(e){
+      alert("Create account failed: " + (e.message || e));
+      aqxRenderSyncUI();
+    }
+  };
+
+  window.aqxLogout = async function(){
+    try{
+      if(!ready()){ alert("Firebase is still starting. Wait 2 seconds and try again."); return; }
+      await window.aqxFirebaseTools.signOut(window.aqxAuth);
+      window.aqxAuthReady = true;
+      window.aqxCurrentUser = null;
+      aqxRenderSyncUI();
+      if(typeof showAqxToast === "function") showAqxToast("Logged out");
+    }catch(e){
+      alert("Logout failed: " + (e.message || e));
+    }
+  };
+
+  window.aqxCloudSave = async function(){
+    try{
+      if(!ready()){ alert("Firebase is still starting. Wait 2 seconds and try again."); return; }
+      const u = user();
+      if(!u){ alert("Login first, then save to cloud."); return; }
+
+      // Do NOT call aqxCreateSafetyBackup here. Big coral base64 images can exceed browser quota.
+      safeCloudMarker("before chunked cloud save");
+
+      const snapshot = allLocalData();
+      if(typeof window.aqxAllCoralImages === "function"){
+        snapshot["aquorax_coral_image_store_v18"] = JSON.stringify(await window.aqxAllCoralImages());
+      }
+      const counts = countSnapshot(snapshot);
+      const packed = JSON.stringify(snapshot);
+      const chunks = splitString(packed);
+
+      aqxSetSyncBadge("warn","🟡 Saving...");
+
+      const metaRef = window.aqxFirebaseTools.doc(window.aqxDb, "aquoraxUsers", u.uid);
+      await window.aqxFirebaseTools.setDoc(metaRef, {
+        app: "AquoraX",
+        version: "chunked-v13",
+        userEmail: u.email || "",
+        savedAt: new Date().toISOString(),
+        updatedAt: window.aqxFirebaseTools.serverTimestamp(),
+        chunkCount: chunks.length,
+        totalChars: packed.length,
+        counts
+      }, { merge: true });
+
+      for(let i=0;i<chunks.length;i++){
+        const chunkRef = window.aqxFirebaseTools.doc(window.aqxDb, "aquoraxUsers", u.uid, "chunks", String(i));
+        await window.aqxFirebaseTools.setDoc(chunkRef, {
+          index: i,
+          data: chunks[i],
+          updatedAt: window.aqxFirebaseTools.serverTimestamp()
+        });
+      }
+
+      localStorage.setItem(AQX_CLOUD_LAST_SYNC_KEY, new Date().toISOString());
+      aqxRenderSyncUI();
+
+      alert("Cloud save complete. Tanks: " + counts.tanks + " | Tests: " + counts.tests + " | Coral photos: " + counts.photos + " | Chunks: " + chunks.length);
+      if(typeof showAqxToast === "function") showAqxToast("Saved to cloud");
+    }catch(e){
+      console.error("Chunked cloud save failed", e);
+      aqxSetSyncBadge("bad","🔴 Save failed");
+      alert("Cloud save failed: " + (e.message || e));
+    }
+  };
+
+  window.aqxCloudLoad = async function(){
+    try{
+      if(!ready()){ alert("Firebase is still starting. Wait 2 seconds and try again."); return; }
+      const u = user();
+      if(!u){ alert("Login first, then load from cloud."); return; }
+
+      if(!confirm("Load your cloud save onto this device? This will replace current local AquoraX data.")) return;
+      safeCloudMarker("before chunked cloud load");
+
+      aqxSetSyncBadge("warn","🟡 Loading...");
+
+      const metaRef = window.aqxFirebaseTools.doc(window.aqxDb, "aquoraxUsers", u.uid);
+      const metaSnap = await window.aqxFirebaseTools.getDoc(metaRef);
+
+      if(!metaSnap.exists()){
+        alert("No cloud save found for this account yet.");
+        aqxRenderSyncUI();
+        return;
+      }
+
+      const meta = metaSnap.data();
+      let store = null;
+
+      if(meta.chunkCount && meta.chunkCount > 0){
+        let packed = "";
+        for(let i=0;i<meta.chunkCount;i++){
+          const chunkRef = window.aqxFirebaseTools.doc(window.aqxDb, "aquoraxUsers", u.uid, "chunks", String(i));
+          const chunkSnap = await window.aqxFirebaseTools.getDoc(chunkRef);
+          if(!chunkSnap.exists()){
+            alert("Cloud chunk missing: " + i + ". Save to cloud again from the main device.");
+            aqxRenderSyncUI();
+            return;
+          }
+          packed += chunkSnap.data().data || "";
+        }
+        store = JSON.parse(packed);
+      }else if(meta.localStorage){
+        store = meta.localStorage;
+      }
+
+      if(!store || typeof store !== "object"){
+        alert("Cloud save is invalid or empty.");
+        aqxSetSyncBadge("bad","🔴 Bad cloud save");
+        return;
+      }
+
+      const counts = meta.counts || countSnapshot(store);
+      let coralImageStoreV18 = [];
+      try{
+        if(store["aquorax_coral_image_store_v18"]){
+          coralImageStoreV18 = JSON.parse(store["aquorax_coral_image_store_v18"] || "[]");
+          delete store["aquorax_coral_image_store_v18"];
+        }
+      }catch(e){ console.warn("Could not parse coral image cloud store", e); }
+
+      Object.keys(localStorage).forEach(k => {
+        if(k.startsWith("reefos_") || k.startsWith("aquorax_") || k.startsWith("AQX_")){
+          localStorage.removeItem(k);
+        }
+      });
+
+      Object.entries(store).forEach(([k,v]) => {
+        if(typeof v === "string") localStorage.setItem(k,v);
+        else localStorage.setItem(k,JSON.stringify(v));
+      });
+
+      if(coralImageStoreV18.length && typeof window.aqxRestoreCoralImages === "function"){
+        await window.aqxRestoreCoralImages(coralImageStoreV18);
+      }
+
+      localStorage.setItem(AQX_CLOUD_LAST_SYNC_KEY, new Date().toISOString());
+
+      alert("Cloud loaded. Tanks: " + (counts.tanks || 0) + " | Tests: " + (counts.tests || 0) + " | Coral photos: " + (counts.photos || 0) + ". AquoraX will reload now.");
+      location.reload();
+    }catch(e){
+      console.error("Chunked cloud load failed", e);
+      aqxSetSyncBadge("bad","🔴 Load failed");
+      alert("Cloud load failed: " + (e.message || e));
+    }
+  };
+
+  window.aqxPromptLogin = window.aqxLogin;
+
+  const boot = setInterval(() => {
+    if(window.aqxFirebaseReady || window.aqxAuthReady){
+      aqxRenderSyncUI();
+      clearInterval(boot);
+    }
+  }, 250);
+
+  setInterval(aqxRenderSyncUI, 3000);
+  setTimeout(aqxRenderSyncUI, 500);
+
+  console.log("AquoraX Chunked Cloud Sync Controller v13 active");
+})();
+</script>
+
+
+<script>
+/* AquoraX UI Restore Backup Helpers v14 */
+(function(){
+  function allLocal(){
+    const data={};
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k)data[k]=localStorage.getItem(k);
+    }
+    return data;
+  }
+
+  window.aqxRenderSafetyStatus = function(){
+    const el=document.getElementById("aqxLastSaved");
+    if(!el)return;
+    const last=localStorage.getItem("aquorax_last_saved_v1") || localStorage.getItem("aquorax_last_saved") || localStorage.getItem("aquorax_cloud_last_sync_v1");
+    el.textContent = "Last saved: " + (last ? new Date(last).toLocaleString() : "--");
+  };
+
+  if(typeof window.exportFullAquoraXBackup !== "function"){
+    window.exportFullAquoraXBackup=function(){
+      const backup={app:"AquoraX",exportedAt:new Date().toISOString(),localStorage:allLocal()};
+      const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);
+      a.download="AquoraX-full-backup-"+new Date().toISOString().slice(0,10)+".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    };
+  }
+
+  if(typeof window.restoreLastSafetyBackup !== "function"){
+    window.restoreLastSafetyBackup=function(){
+      alert("No local restore point available in this clean build. Use Load from Cloud or Import Backup.");
+    };
+  }
+
+  setInterval(()=>{ if(typeof aqxRenderSyncUI==="function") aqxRenderSyncUI(); aqxRenderSafetyStatus(); },2000);
+  setTimeout(()=>{ if(typeof aqxRenderSyncUI==="function") aqxRenderSyncUI(); aqxRenderSafetyStatus(); },500);
+  console.log("AquoraX UI Restore v14 active");
+})();
+</script>
+
+</body></html>
