@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquoraX v1.5</title>
+  <style>
+    :root {
+      --bg: #06131f;
+      --panel: rgba(8, 28, 45, 0.78);
+      --panelSolid: #081c2d;
+      --text: #eef8ff;
+      --muted: rgba(238, 248, 255, 0.72);
+      --line: rgba(255,255,255,0.12);
+      --blue: #00aaff;
+      --blue2: #0077ff;
+      --green: #37ffc0;
+      --yellow: #ffd45f;
+      --red: #ff6577;
+      --shadow: 0 18px 50px rgba(0,0,0,0.32);
+      --radius: 24px;
+      --panelAlpha: 0.78;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(0,170,255,0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(0,255,200,0.12), transparent 36%),
+        linear-gradient(135deg, #03101b, #061827 42%, #020b12);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: var(--custom-bg, none);
+      background-size: cover;
+      background-position: center;
+      opacity: 0.22;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.55));
+      z-index: -1;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      touch-action: manipulation;
+    }
+
+    .app-shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--blue), #24ffd0);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 32px rgba(0,170,255,0.35);
+      font-weight: 950;
+      color: #00111d;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 7vw, 4.4rem);
+      letter-spacing: -0.08em;
+      line-height: 0.92;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-top: 5px;
+    }
+
+    .version-pill {
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(0,170,255,0.12);
+      border: 1px solid rgba(0,170,255,0.32);
+      color: #b8eeff;
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: rgba(8, 28, 45, var(--panelAlpha));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .panel-header h2 {
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .panel-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .parameter-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.075);
+      border: 1px solid rgba(255,255,255,0.12);
+      min-width: 0;
+    }
+
+    .parameter-card.hidden-card {
+      opacity: 0.55;
+    }
+
+    .parameter-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .parameter-title {
+      font-weight: 950;
+      font-size: 1.02rem;
+      word-break: break-word;
+    }
+
+    .parameter-sub {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 3px;
+    }
+
+    .reading-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 15px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(0,170,255,0.78);
+      box-shadow: 0 0 0 4px rgba(0,170,255,0.12);
+    }
+
+    .unit-chip {
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 0.86rem;
+      min-width: 34px;
+      text-align: right;
+    }
+
+    .health-pill {
+      width: fit-content;
+      white-space: nowrap;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 950;
+    }
+
+    .health-good {
+      background: rgba(55,255,192,0.14);
+      color: var(--green);
+      border: 1px solid rgba(55,255,192,0.24);
+    }
+
+    .health-warn {
+      background: rgba(255,212,95,0.14);
+      color: var(--yellow);
+      border: 1px solid rgba(255,212,95,0.24);
+    }
+
+    .health-critical {
+      background: rgba(255,101,119,0.14);
+      color: var(--red);
+      border: 1px solid rgba(255,101,119,0.24);
+    }
+
+    .score-ring {
+      width: 170px;
+      height: 170px;
+      margin: 8px auto 12px;
+      border-radius: 50%;
+      background: conic-gradient(var(--blue) var(--scoreDeg, 0deg), rgba(255,255,255,0.11) 0deg);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.25), 0 18px 50px rgba(0,170,255,0.12);
+    }
+
+    .score-inner {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      background: rgba(6,19,31,0.94);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .score-number {
+      font-size: 2rem;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+    }
+
+    .score-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .actions-row, .parameter-actions, .modal-actions, .setting-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 15px;
+      padding: 11px 13px;
+      font-weight: 950;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: #fff;
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .danger-btn {
+      background: rgba(255,82,100,0.92);
+      color: #fff;
+    }
+
+    .ghost-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px dashed rgba(255,255,255,0.24);
+    }
+
+    .log-list {
+      display: grid;
+      gap: 10px;
+      max-height: 380px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .log-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      padding: 12px;
+    }
+
+    .log-date {
+      font-weight: 950;
+      margin-bottom: 7px;
+    }
+
+    .log-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .mini-chip {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(0,170,255,0.12);
+      border: 1px solid rgba(0,170,255,0.18);
+      color: #d9f6ff;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .parameters-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .manage-card-layout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: grid;
+      place-items: center;
+      z-index: 9999;
+      padding: 18px;
+    }
+
+    .modal-card {
+      width: min(500px, 100%);
+      background: #071827;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 26px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      box-shadow: 0 25px 90px rgba(0,0,0,0.55);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .toggle-row {
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .toggle-row label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: auto;
+      transform: scale(1.15);
+    }
+
+    .settings-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .range-wrap {
+      display: grid;
+      gap: 6px;
+    }
+
+    .range-wrap input {
+      padding: 0;
+    }
+
+    .empty-state {
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 18px;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-shell {
+        padding: 12px;
+      }
+
+      .panel {
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .parameter-top, .manage-card-layout {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .parameter-actions .btn, .actions-row .btn, .modal-actions .btn {
+        flex: 1 1 auto;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+
+      .score-ring {
+        width: 145px;
+        height: 145px;
+      }
+
+      .score-inner {
+        width: 108px;
+        height: 108px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo-mark">AX</div>
+          <div>
+            <h1>AquoraX</h1>
+            <p class="subtitle">Your reef. Your targets. Your system.</p>
+          </div>
+        </div>
+        <div class="version-pill">v1.5 Custom Parameters</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Current Tank Parameters</h2>
+            <p>Only visible parameters appear here. Every target is user-defined.</p>
+          </div>
+          <button class="btn primary-btn" onclick="saveTestLog()">Save Test Log</button>
+        </div>
+        <div id="dashboardParameters" class="cards-grid"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Reef Health Score</h2>
+            <p>Calculated from parameters included in your score.</p>
+          </div>
+        </div>
+        <div class="score-ring" id="scoreRing">
+          <div class="score-inner">
+            <div>
+              <div class="score-number" id="reefScoreNumber">0%</div>
+              <div class="score-label" id="reefScoreLabel">No readings yet</div>
+            </div>
+          </div>
+        </div>
+        <div id="reefScoreBreakdown" class="log-values"></div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:18px;">
+      <div class="panel-header">
+        <div>
+          <h2>Manage Parameters</h2>
+          <p>Add, delete, reorder, hide/show and set your own target ranges.</p>
+        </div>
+        <button class="btn primary-btn" onclick="openParameterModal()">+ Add Parameter</button>
+      </div>
+      <div id="parametersList" class="parameters-list"></div>
+    </section>
+
+    <section class="grid" style="margin-top:18px;">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Test History</h2>
+            <p>Saved locally for now. New tests do not overwrite old tests.</p>
+          </div>
+          <button class="btn danger-btn" onclick="clearTestLogs()">Clear Logs</button>
+        </div>
+        <div id="testLogList" class="log-list"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>App Customisation</h2>
+            <p>Background and transparency stay local on this device.</p>
+          </div>
+        </div>
+        <div class="settings-stack">
+          <label class="range-wrap">
+            <span class="parameter-sub">Panel transparency</span>
+            <input id="panelAlphaRange" type="range" min="0" max="100" value="78" oninput="setPanelTransparency(this.value)">
+          </label>
+          <input id="backgroundInput" type="file" accept="image/*" onchange="setCustomBackground(event)">
+          <div class="actions-row">
+            <button class="btn secondary-btn" onclick="resetCustomBackground()">Remove Background</button>
+            <button class="btn ghost-btn" onclick="resetParametersToDefault()">Reset Parameters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="parameterModal" class="modal hidden">
+    <div class="modal-card">
+      <h2 id="parameterModalTitle">Add Parameter</h2>
+      <input id="paramNameInput" placeholder="Parameter name e.g. Iodine">
+      <input id="paramUnitInput" placeholder="Unit e.g. ppm / dKH / °C">
+      <div class="input-row">
+        <input id="paramMinInput" type="number" step="any" placeholder="Target min">
+        <input id="paramMaxInput" type="number" step="any" placeholder="Target max">
+      </div>
+      <div class="toggle-row">
+        <label><input id="paramVisibleInput" type="checkbox" checked> Show on dashboard</label>
+        <label><input id="paramScoreInput" type="checkbox" checked> Include in reef health score</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn secondary-btn" onclick="closeParameterModal()">Cancel</button>
+        <button class="btn primary-btn" onclick="saveParameterFromModal()">Save Parameter</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PARAMETER_STORAGE_KEY = "aquorax_v15_parameters";
+    const TEST_LOG_STORAGE_KEY = "aquorax_v15_test_logs";
+    const SETTINGS_STORAGE_KEY = "aquorax_v15_settings";
+
+    let parameters = [];
+    let testLogs = [];
+    let editingParameterId = null;
+
+    const defaultParameters = [
+      { name: "Nitrate", unit: "ppm", currentValue: "", targetMin: 2, targetMax: 20, includeInScore: true, visible: true },
+      { name: "Phosphate", unit: "ppm", currentValue: "", targetMin: 0.03, targetMax: 0.10, includeInScore: true, visible: true },
+      { name: "Alkalinity", unit: "dKH", currentValue: "", targetMin: 7.5, targetMax: 9, includeInScore: true, visible: true },
+      { name: "Calcium", unit: "ppm", currentValue: "", targetMin: 400, targetMax: 450, includeInScore: true, visible: true },
+      { name: "Magnesium", unit: "ppm", currentValue: "", targetMin: 1250, targetMax: 1400, includeInScore: true, visible: true },
+      { name: "pH", unit: "", currentValue: "", targetMin: 7.8, targetMax: 8.4, includeInScore: true, visible: true },
+      { name: "Salinity", unit: "SG", currentValue: "", targetMin: 1.024, targetMax: 1.026, includeInScore: true, visible: true },
+      { name: "Temperature", unit: "°C", currentValue: "", targetMin: 24, targetMax: 26, includeInScore: true, visible: true }
+    ];
+
+    function makeId() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      return "ax_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+    }
+
+    function hydrateDefaults() {
+      return defaultParameters.map(p => ({ id: makeId(), ...p }));
+    }
+
+    function loadData() {
+      const savedParameters = localStorage.getItem(PARAMETER_STORAGE_KEY);
+      const savedLogs = localStorage.getItem(TEST_LOG_STORAGE_KEY);
+      const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+
+      try {
+        parameters = savedParameters ? JSON.parse(savedParameters) : hydrateDefaults();
+      } catch {
+        parameters = hydrateDefaults();
+      }
+
+      parameters = parameters.map(p => ({
+        id: p.id || makeId(),
+        name: p.name || "Unnamed Parameter",
+        unit: p.unit || "",
+        currentValue: p.currentValue ?? "",
+        targetMin: p.targetMin ?? "",
+        targetMax: p.targetMax ?? "",
+        includeInScore: p.includeInScore !== false,
+        visible: p.visible !== false
+      }));
+
+      try {
+        testLogs = savedLogs ? JSON.parse(savedLogs) : [];
+      } catch {
+        testLogs = [];
+      }
+
+      if (savedSettings) {
+        try {
+          const settings = JSON.parse(savedSettings);
+          if (settings.panelAlpha !== undefined) applyPanelTransparency(settings.panelAlpha);
+          if (settings.backgroundDataUrl) document.body.style.setProperty("--custom-bg", `url(${settings.backgroundDataUrl})`);
+        } catch {}
+      }
+
+      saveParameters();
+      renderAll();
+    }
+
+    function saveParameters() {
+      localStorage.setItem(PARAMETER_STORAGE_KEY, JSON.stringify(parameters));
+    }
+
+    function saveLogs() {
+      localStorage.setItem(TEST_LOG_STORAGE_KEY, JSON.stringify(testLogs));
+    }
+
+    function getSettings() {
+      try {
+        return JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveSettings(settings) {
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderParameterManager();
+      renderReefHealth();
+      renderTestLogs();
+    }
+
+    function getStatus(parameter) {
+      const value = parseFloat(parameter.currentValue);
+      const min = parseFloat(parameter.targetMin);
+      const max = parseFloat(parameter.targetMax);
+
+      if (Number.isNaN(value) || Number.isNaN(min) || Number.isNaN(max)) {
+        return { text: "No reading", className: "health-warn", score: null };
+      }
+
+      if (value >= min && value <= max) {
+        return { text: "In range ✅", className: "health-good", score: 100 };
+      }
+
+      const range = Math.abs(max - min) || Math.abs(max) || 1;
+      const slightLow = min - range * 0.25;
+      const slightHigh = max + range * 0.25;
+
+      if (value >= slightLow && value <= slightHigh) {
+        return { text: "Slightly off ⚠️", className: "health-warn", score: 60 };
+      }
+
+      return { text: "Critical ❌", className: "health-critical", score: 20 };
+    }
+
+    function renderDashboard() {
+      const wrap = document.getElementById("dashboardParameters");
+      wrap.innerHTML = "";
+
+      const visibleParameters = parameters.filter(p => p.visible);
+
+      if (!visibleParameters.length) {
+        wrap.innerHTML = `<div class="empty-state">No visible parameters. Open Manage Parameters and show the tests you use.</div>`;
+        return;
+      }
+
+      visibleParameters.forEach(parameter => {
+        const status = getStatus(parameter);
+        const card = document.createElement("article");
+        card.className = "parameter-card";
+        card.innerHTML = `
+          <div class="parameter-top">
+            <div>
+              <div class="parameter-title">${escapeHTML(parameter.name)}</div>
+              <div class="parameter-sub">Target: ${escapeHTML(parameter.targetMin)} - ${escapeHTML(parameter.targetMax)} ${escapeHTML(parameter.unit)}</div>
+            </div>
+            <div class="health-pill ${status.className}">${status.text}</div>
+          </div>
+          <div class="reading-row">
+            <input type="number" step="any" inputmode="decimal" value="${escapeHTML(parameter.currentValue)}" placeholder="Current reading" oninput="updateReading('${parameter.id}', this.value)">
+            <div class="unit-chip">${escapeHTML(parameter.unit)}</div>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function renderParameterManager() {
+      const list = document.getElementById("parametersList");
+      list.innerHTML = "";
+
+      if (!parameters.length) {
+        list.innerHTML = `<div class="empty-state">No parameters yet. Add your first tank test.</div>`;
+        return;
+      }
+
+      parameters.forEach((parameter, index) => {
+        const status = getStatus(parameter);
+        const card = document.createElement("article");
+        card.className = `parameter-card ${parameter.visible ? "" : "hidden-card"}`;
+        card.innerHTML = `
+          <div class="manage-card-layout">
+            <div>
+              <div class="parameter-title">${escapeHTML(parameter.name)} ${parameter.visible ? "" : "(hidden)"}</div>
+              <div class="parameter-sub">Unit: ${escapeHTML(parameter.unit || "None")}</div>
+              <div class="parameter-sub">Target: ${escapeHTML(parameter.targetMin)} - ${escapeHTML(parameter.targetMax)} ${escapeHTML(parameter.unit)}</div>
+              <div class="parameter-sub">Score: ${parameter.includeInScore ? "Included" : "Not included"}</div>
+            </div>
+            <div class="health-pill ${status.className}">${status.text}</div>
+          </div>
+          <div class="parameter-actions">
+            <button class="btn secondary-btn" onclick="moveParameter(${index}, -1)" ${index === 0 ? "disabled" : ""}>↑</button>
+            <button class="btn secondary-btn" onclick="moveParameter(${index}, 1)" ${index === parameters.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="btn secondary-btn" onclick="toggleVisibility('${parameter.id}')">${parameter.visible ? "Hide" : "Show"}</button>
+            <button class="btn secondary-btn" onclick="toggleScore('${parameter.id}')">${parameter.includeInScore ? "Remove Score" : "Use Score"}</button>
+            <button class="btn primary-btn" onclick="openParameterModal('${parameter.id}')">Edit</button>
+            <button class="btn danger-btn" onclick="deleteParameter('${parameter.id}')">Delete</button>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function renderReefHealth() {
+      const scoreItems = parameters
+        .filter(p => p.includeInScore)
+        .map(p => ({ parameter: p, status: getStatus(p) }))
+        .filter(item => item.status.score !== null);
+
+      const number = document.getElementById("reefScoreNumber");
+      const label = document.getElementById("reefScoreLabel");
+      const ring = document.getElementById("scoreRing");
+      const breakdown = document.getElementById("reefScoreBreakdown");
+
+      breakdown.innerHTML = "";
+
+      if (!scoreItems.length) {
+        number.textContent = "0%";
+        label.textContent = "No readings yet";
+        ring.style.setProperty("--scoreDeg", "0deg");
+        breakdown.innerHTML = `<span class="mini-chip">Add readings to build your score</span>`;
+        return;
+      }
+
+      const score = Math.round(scoreItems.reduce((sum, item) => sum + item.status.score, 0) / scoreItems.length);
+      number.textContent = `${score}%`;
+      ring.style.setProperty("--scoreDeg", `${score * 3.6}deg`);
+
+      if (score >= 85) label.textContent = "Reef looking strong";
+      else if (score >= 60) label.textContent = "Needs watching";
+      else label.textContent = "Needs attention";
+
+      scoreItems.forEach(item => {
+        const chip = document.createElement("span");
+        chip.className = "mini-chip";
+        chip.textContent = `${item.parameter.name}: ${item.status.text.replace(" ✅", "").replace(" ⚠️", "").replace(" ❌", "")}`;
+        breakdown.appendChild(chip);
+      });
+    }
+
+    function renderTestLogs() {
+      const list = document.getElementById("testLogList");
+      list.innerHTML = "";
+
+      if (!testLogs.length) {
+        list.innerHTML = `<div class="empty-state">No test logs saved yet.</div>`;
+        return;
+      }
+
+      [...testLogs].reverse().forEach(log => {
+        const card = document.createElement("article");
+        card.className = "log-card";
+        const values = log.values.map(v => `<span class="mini-chip">${escapeHTML(v.name)}: ${escapeHTML(v.value)} ${escapeHTML(v.unit)}</span>`).join("");
+        card.innerHTML = `
+          <div class="log-date">${escapeHTML(log.dateLabel)}</div>
+          <div class="log-values">${values || `<span class="mini-chip">No readings</span>`}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function updateReading(id, value) {
+      const parameter = parameters.find(p => p.id === id);
+      if (!parameter) return;
+      parameter.currentValue = value;
+      saveParameters();
+      renderParameterManager();
+      renderReefHealth();
+    }
+
+    function openParameterModal(id = null) {
+      editingParameterId = id;
+      const modal = document.getElementById("parameterModal");
+      const title = document.getElementById("parameterModalTitle");
+      const nameInput = document.getElementById("paramNameInput");
+      const unitInput = document.getElementById("paramUnitInput");
+      const minInput = document.getElementById("paramMinInput");
+      const maxInput = document.getElementById("paramMaxInput");
+      const visibleInput = document.getElementById("paramVisibleInput");
+      const scoreInput = document.getElementById("paramScoreInput");
+
+      if (id) {
+        const parameter = parameters.find(p => p.id === id);
+        if (!parameter) return;
+        title.textContent = "Edit Parameter";
+        nameInput.value = parameter.name;
+        unitInput.value = parameter.unit;
+        minInput.value = parameter.targetMin;
+        maxInput.value = parameter.targetMax;
+        visibleInput.checked = parameter.visible;
+        scoreInput.checked = parameter.includeInScore;
+      } else {
+        title.textContent = "Add Parameter";
+        nameInput.value = "";
+        unitInput.value = "";
+        minInput.value = "";
+        maxInput.value = "";
+        visibleInput.checked = true;
+        scoreInput.checked = true;
+      }
+
+      modal.classList.remove("hidden");
+      setTimeout(() => nameInput.focus(), 50);
+    }
+
+    function closeParameterModal() {
+      document.getElementById("parameterModal").classList.add("hidden");
+      editingParameterId = null;
+    }
+
+    function saveParameterFromModal() {
+      const name = document.getElementById("paramNameInput").value.trim();
+      const unit = document.getElementById("paramUnitInput").value.trim();
+      const targetMin = document.getElementById("paramMinInput").value;
+      const targetMax = document.getElementById("paramMaxInput").value;
+      const visible = document.getElementById("paramVisibleInput").checked;
+      const includeInScore = document.getElementById("paramScoreInput").checked;
+
+      if (!name) {
+        alert("Give the parameter a name first bro.");
+        return;
+      }
+
+      if (targetMin === "" || targetMax === "") {
+        alert("Set a min and max target so AquoraX can score it.");
+        return;
+      }
+
+      if (parseFloat(targetMin) > parseFloat(targetMax)) {
+        alert("Target min cannot be higher than target max.");
+        return;
+      }
+
+      if (editingParameterId) {
+        const parameter = parameters.find(p => p.id === editingParameterId);
+        if (parameter) {
+          parameter.name = name;
+          parameter.unit = unit;
+          parameter.targetMin = targetMin;
+          parameter.targetMax = targetMax;
+          parameter.visible = visible;
+          parameter.includeInScore = includeInScore;
+        }
+      } else {
+        parameters.push({
+          id: makeId(),
+          name,
+          unit,
+          currentValue: "",
+          targetMin,
+          targetMax,
+          includeInScore,
+          visible
+        });
+      }
+
+      saveParameters();
+      closeParameterModal();
+      renderAll();
+    }
+
+    function deleteParameter(id) {
+      const parameter = parameters.find(p => p.id === id);
+      if (!parameter) return;
+      if (!confirm(`Delete ${parameter.name}? This removes it from your current dashboard, but old logs stay saved.`)) return;
+      parameters = parameters.filter(p => p.id !== id);
+      saveParameters();
+      renderAll();
+    }
+
+    function toggleVisibility(id) {
+      const parameter = parameters.find(p => p.id === id);
+      if (!parameter) return;
+      parameter.visible = !parameter.visible;
+      saveParameters();
+      renderAll();
+    }
+
+    function toggleScore(id) {
+      const parameter = parameters.find(p => p.id === id);
+      if (!parameter) return;
+      parameter.includeInScore = !parameter.includeInScore;
+      saveParameters();
+      renderAll();
+    }
+
+    function moveParameter(index, direction) {
+      const nextIndex = index + direction;
+      if (nextIndex < 0 || nextIndex >= parameters.length) return;
+      const item = parameters.splice(index, 1)[0];
+      parameters.splice(nextIndex, 0, item);
+      saveParameters();
+      renderAll();
+    }
+
+    function saveTestLog() {
+      const values = parameters
+        .filter(p => p.visible && p.currentValue !== "")
+        .map(p => ({
+          parameterId: p.id,
+          name: p.name,
+          unit: p.unit,
+          value: p.currentValue,
+          targetMin: p.targetMin,
+          targetMax: p.targetMax,
+          status: getStatus(p).text
+        }));
+
+      if (!values.length) {
+        alert("Add at least one reading before saving a test log.");
+        return;
+      }
+
+      const now = new Date();
+      testLogs.push({
+        id: makeId(),
+        createdAt: now.toISOString(),
+        dateLabel: now.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }),
+        values
+      });
+
+      saveLogs();
+      renderTestLogs();
+      alert("Test log saved.");
+    }
+
+    function clearTestLogs() {
+      if (!confirm("Clear all saved test logs on this device?")) return;
+      testLogs = [];
+      saveLogs();
+      renderTestLogs();
+    }
+
+    function resetParametersToDefault() {
+      if (!confirm("Reset all parameters back to the AquoraX defaults?")) return;
+      parameters = hydrateDefaults();
+      saveParameters();
+      renderAll();
+    }
+
+    function setPanelTransparency(value) {
+      applyPanelTransparency(value);
+      const settings = getSettings();
+      settings.panelAlpha = value;
+      saveSettings(settings);
+    }
+
+    function applyPanelTransparency(value) {
+      const alpha = Math.max(0, Math.min(100, Number(value))) / 100;
+      document.documentElement.style.setProperty("--panelAlpha", alpha.toString());
+      const range = document.getElementById("panelAlphaRange");
+      if (range) range.value = value;
+    }
+
+    function setCustomBackground(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        document.body.style.setProperty("--custom-bg", `url(${dataUrl})`);
+        const settings = getSettings();
+        settings.backgroundDataUrl = dataUrl;
+        saveSettings(settings);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetCustomBackground() {
+      document.body.style.removeProperty("--custom-bg");
+      const settings = getSettings();
+      delete settings.backgroundDataUrl;
+      saveSettings(settings);
+      const input = document.getElementById("backgroundInput");
+      if (input) input.value = "";
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    document.getElementById("parameterModal").addEventListener("click", function(event) {
+      if (event.target === this) closeParameterModal();
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeParameterModal();
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
