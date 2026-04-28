@@ -2536,16 +2536,29 @@ function applyPresetTheme(color){let t=getTheme();t.accent=color;if(setTheme(t))
 function compressImage(file,cb){let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let max=1400,w=img.width,h=img.height;if(w>h&&w>max){h=Math.round(h*(max/w));w=max}else if(h>=w&&h>max){w=Math.round(w*(max/h));h=max}let c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',.72))};img.src=e.target.result};r.readAsDataURL(file)}
 function currentLoadoutStyle(){
  return {
-  panelOpacity:Math.max(.15,Math.min(1,Number(document.getElementById('panelOpacity')?.value ?? getTheme().panelOpacity ?? .96))),
+  panelOpacity:Math.max(0,Math.min(1,Number(document.getElementById('panelOpacity')?.value ?? getTheme().panelOpacity ?? .96))),
   panelGlow:Math.max(0,Math.min(.35,Number(document.getElementById('panelGlow')?.value ?? getTheme().panelGlow ?? .12)))
  };
 }
 function updateLoadoutPreview(){
- const style=currentLoadoutStyle(),root=document.documentElement;
- root.style.setProperty('--aqxPanelOpacity',String(style.panelOpacity));
- root.style.setProperty('--aqxPanelGlow',String(style.panelGlow));
- if(document.getElementById('panelOpacityValue'))panelOpacityValue.textContent=Math.round(style.panelOpacity*100)+'%';
- if(document.getElementById('panelGlowValue'))panelGlowValue.textContent=Math.round(style.panelGlow*100)+'%';
+  const root = document.documentElement;
+
+  const panelOpacityEl = document.getElementById('panelOpacity');
+  const panelGlowEl = document.getElementById('panelGlow');
+
+  const opacity = panelOpacityEl ? parseFloat(panelOpacityEl.value) : 0;
+  const glow = panelGlowEl ? parseFloat(panelGlowEl.value) : 0;
+
+  root.style.setProperty('--aqxPanelOpacity', opacity);
+  root.style.setProperty('--aqxPanelGlow', glow);
+
+  if(document.getElementById('panelOpacityValue')){
+    panelOpacityValue.textContent = Math.round(opacity * 100) + '%';
+  }
+
+  if(document.getElementById('panelGlowValue')){
+    panelGlowValue.textContent = Math.round(glow * 100) + '%';
+  }
 }
 function applyLoadoutPreset(mode){
  const presets={clear:{panelOpacity:.25,panelGlow:.20},balanced:{panelOpacity:.72,panelGlow:.14},dark:{panelOpacity:.96,panelGlow:.06}};
