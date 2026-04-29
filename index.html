@@ -5080,13 +5080,15 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function val(log, keys){
-    for(var i=0;i<keys.length;i++){
-      if(log && log[keys[i]] !== undefined && log[keys[i]] !== ''){
-        var n = parseFloat(log[keys[i]]);
-        return isNaN(n) ? 0 : n;
-      }
+  for (var i = 0; i < keys.length; i++){
+    if (log && log[keys[i]] !== undefined && log[keys[i]] !== ''){
+      var n = parseFloat(log[keys[i]]);
+      return isNaN(n) ? null : n;
     }
-    return 0;
+  }
+  return null;
+}
+    }
   }
 
   function latestReadiness(){
