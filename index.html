@@ -8427,3 +8427,80 @@ body:not(.aqxCycleUnlocked) [onclick*='show("cycle")']{
   document.addEventListener('click',function(){setTimeout(refreshPolish,250)},true);
 })();
 </script>
+<script>
+(function(){
+
+function getLogs(){
+  try{
+    const logs = JSON.parse(localStorage.getItem('reefos_logs') || '[]');
+    return Array.isArray(logs) ? logs : [];
+  }catch(e){ return []; }
+}
+
+function getScore(){
+  const el = document.querySelector('#reefScore, .score');
+  if(!el) return 0;
+  const n = parseFloat(el.textContent.replace(/[^\d.]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+
+function detectReefState(){
+  const logs = getLogs();
+  const score = getScore();
+
+  if(logs.length <= 1) return 'new';
+  if(score < 60) return 'alert';
+  if(logs.length < 8) return 'building';
+  return 'stable';
+}
+
+function applyStateUI(){
+
+  const state = detectReefState();
+  document.body.setAttribute('data-reef-state', state);
+
+  // --- VISIBILITY CONTROL ---
+  document.querySelectorAll('.aqxEmptyState').forEach(el=>{
+    el.style.display = (state === 'stable') ? 'none' : '';
+  });
+
+  // --- EMPHASIS ---
+  if(state === 'alert'){
+    document.querySelectorAll('.param.bad, .param.warn').forEach(el=>{
+      el.style.boxShadow = "0 0 25px rgba(255,80,80,.4)";
+    });
+  }
+
+  // --- TONE (coach mode override feel) ---
+  const coachBox = document.getElementById('aqxCoachModes');
+  if(coachBox){
+    if(state === 'alert'){
+      coachBox.style.border = "1px solid rgba(255,80,80,.4)";
+    } else {
+      coachBox.style.border = "";
+    }
+  }
+
+  // --- PRIORITY ORDER (optional visual shift) ---
+  const home = document.getElementById('home');
+  if(home){
+    if(state === 'new'){
+      home.prepend(home.querySelector('.card')); // push top card forward
+    }
+  }
+
+  // --- DEBUG (you can remove later)
+  console.log("Reef State:", state);
+}
+
+// run on load + interactions
+document.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(applyStateUI, 400);
+});
+
+document.addEventListener('click', ()=>{
+  setTimeout(applyStateUI, 300);
+});
+
+})();
+</script>
