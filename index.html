@@ -8233,3 +8233,197 @@ body:not(.aqxCycleUnlocked) [onclick*='show("cycle")']{
   setTimeout(applyCycleMenuStealth,1200);
 })();
 </script>
+<!-- AquoraX v3.0 Safe Upgrade Layer -->
+<style>
+#aqxOnboardingOverlay{position:fixed;inset:0;z-index:999999;background:radial-gradient(circle at 50% -12%,rgba(0,229,255,.24),transparent 32%),linear-gradient(180deg,#020814,#000 88%);display:none;align-items:center;justify-content:center;padding:18px;color:var(--text)}
+#aqxOnboardingOverlay.show{display:flex}
+.aqxOnboardingBox{width:min(680px,100%);border:1px solid rgba(0,229,255,.38);border-radius:26px;padding:20px;background:linear-gradient(145deg,rgba(0,229,255,.12),rgba(7,24,39,.96) 48%,rgba(166,65,255,.10));box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 42px rgba(0,229,255,.14)}
+.aqxOnboardingBox h1{margin:0;font-size:36px;font-weight:950}.aqxOnboardingBox h1 span{color:var(--cyan)}
+.aqxOnboardingBox p{color:#d5edf7;line-height:1.4}
+.aqxOnboardingSteps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
+.aqxOnboardingSteps div{border:1px solid var(--line);border-radius:16px;padding:12px;background:rgba(4,12,20,.72)}
+.aqxOnboardingSteps b{display:block;color:var(--cyan);margin-bottom:5px}
+.aqxOnboardingSteps span{font-size:13px;color:var(--muted);font-weight:800}
+.aqxOnboardingActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.aqxOnboardingActions button{margin:0}
+.aqxEmptyState{border:1px dashed rgba(0,229,255,.35);border-radius:16px;padding:14px;margin:10px 0;background:rgba(0,229,255,.065);color:var(--muted);font-weight:800;line-height:1.35}
+.aqxEmptyState b{display:block;color:var(--cyan);margin-bottom:4px}
+.aqxMaturityBadge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(0,229,255,.36);border-radius:999px;padding:7px 11px;color:var(--cyan);font-size:12px;font-weight:950;background:rgba(4,12,20,.78);margin-top:10px;box-shadow:0 0 20px rgba(0,229,255,.08)}
+.aqxShareCard{border-color:rgba(0,229,255,.35)!important;background:linear-gradient(135deg,rgba(0,229,255,.10),rgba(18,140,255,.07),rgba(2,9,16,var(--aqxPanelOpacity,.96)))!important}
+.aqxSharePreview{border:1px solid var(--line);border-radius:18px;padding:16px;background:radial-gradient(circle at 70% 0%,rgba(0,229,255,.16),transparent 36%),linear-gradient(180deg,rgba(7,24,39,.94),rgba(2,8,18,.98));margin-top:10px;text-align:center}
+.aqxSharePreview h3{margin:0 0 5px;font-size:24px}.aqxSharePreview .big{font-size:48px;font-weight:950;color:var(--cyan);line-height:1}
+.aqxSharePreview small{display:block;color:var(--muted);font-weight:900;margin-top:6px}
+.aqxCoachModeGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.aqxCoachModeGrid button{margin:0;padding:10px;font-size:13px}
+.aqxCoachModeGrid button.active{outline:2px solid rgba(0,229,255,.65);box-shadow:0 0 24px rgba(0,229,255,.16)!important;filter:brightness(1.08)}
+.aqxGlowGood{animation:aqxGoodPulse 1.8s ease-in-out infinite alternate}
+@keyframes aqxGoodPulse{from{box-shadow:0 0 10px rgba(34,242,139,.08)}to{box-shadow:0 0 24px rgba(34,242,139,.2)}}
+.aqxSoftLift{animation:aqxSoftLift .45s ease both}
+@keyframes aqxSoftLift{from{opacity:.88;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:430px){.aqxOnboardingSteps,.aqxOnboardingActions,.aqxCoachModeGrid{grid-template-columns:1fr}.aqxOnboardingBox h1{font-size:30px}}
+</style>
+
+<div id="aqxOnboardingOverlay">
+  <div class="aqxOnboardingBox">
+    <h1>Welcome to <span>AquoraX</span></h1>
+    <p>Set up your reef profile once, then AquoraX can make your dashboard feel personal from the first test.</p>
+    <div class="aqxOnboardingSteps">
+      <div><b>1. Tank Profile</b><span>Name, type and volume.</span></div>
+      <div><b>2. First Test</b><span>Start your reef history.</span></div>
+      <div><b>3. Smart Tracking</b><span>Unlock trends over time.</span></div>
+    </div>
+    <label>Tank name</label><input id="aqxOnboardTankName" placeholder="My Reef">
+    <label>Tank type</label>
+    <select id="aqxOnboardTankType">
+      <option>Reef</option><option>Mixed Reef</option><option>Fish Only</option><option>Frag Tank</option>
+    </select>
+    <label>Volume / litres</label><input id="aqxOnboardLitres" type="number" inputmode="decimal" placeholder="250">
+    <div class="aqxOnboardingActions">
+      <button onclick="aqxFinishOnboarding()">Start AquoraX</button>
+      <button class="secondary" onclick="aqxSkipOnboarding()">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.__AQX_V30_SAFE_UPGRADE__) return;
+  window.__AQX_V30_SAFE_UPGRADE__=true;
+
+  const ONBOARD_KEY='aqx_onboarding_complete_v300';
+  const PROFILE_KEY='aqx_first_tank_profile_v300';
+  const COACH_KEY='aqx_coach_mode_v300';
+
+  function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function readJson(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+  function writeJson(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function toast(m){try{if(typeof aqxToast==='function')return aqxToast(m);if(typeof showAqxToast==='function')return showAqxToast(m);const t=document.getElementById('aqxToast');if(t){t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}}catch(e){}}
+
+  function findArray(names){for(const k of names){const v=readJson(k,null);if(Array.isArray(v))return v}return[]}
+  function getLogs(){return findArray(['reefos_logs','aquorax_logs','aqx_logs','logs','reefLogs','testLogs','aqxTestLogs','aquoraXLogs'])}
+  function getPhotos(){return findArray(['reefos_photos','aquorax_photos','aqx_photos','photos','coralPhotos','growthPhotos','aqxGrowthPhotos'])}
+  function getScoreText(){const e=document.querySelector('#reefScore,#score,[data-reef-score],.score');return e?(e.textContent||'--').trim():'--'}
+  function getScoreNumber(){const n=parseFloat(getScoreText().replace(/[^\d.]/g,''));return Number.isFinite(n)?n:0}
+  function getTankName(){const p=readJson(PROFILE_KEY,null)||readJson('reefos_tank_profile',null)||readJson('tankProfile',null);if(p&&p.name)return p.name;const e=document.querySelector('.tankName,#tankName,[data-tank-name]');return e?(e.textContent||'My Reef').trim():'My Reef'}
+
+  function getMaturity(){
+    const logs=getLogs(),photos=getPhotos(),score=getScoreNumber();
+    if(logs.length>=20&&score>=85)return{icon:'👑',label:'Advanced Reef',detail:'Dialled-in tracking and strong stability'};
+    if(logs.length>=8&&score>=70)return{icon:'🌊',label:'Stable Reef',detail:'Good routine and growing data history'};
+    if(logs.length>=2)return{icon:'🪸',label:'Building Stability',detail:'Early trends are starting to form'};
+    if(photos.length>0)return{icon:'📸',label:'Growth Journey Started',detail:'Photo tracking has begun'};
+    return{icon:'🌱',label:'New Reef Journey',detail:'Log your first test to start insights'};
+  }
+
+  function addMaturityBadge(){
+    const host=document.querySelector('.hero')||document.querySelector('.tankProfileCard')||document.querySelector('.card');
+    if(!host)return;
+    let b=document.getElementById('aqxMaturityBadge');
+    const m=getMaturity();
+    if(!b){b=document.createElement('div');b.id='aqxMaturityBadge';b.className='aqxMaturityBadge aqxSoftLift';(host.querySelector('p')||host).insertAdjacentElement('afterend',b)}
+    b.textContent=m.icon+' '+m.label;b.title=m.detail;
+  }
+
+  function addCoachModes(){
+    if(document.getElementById('aqxCoachModes'))return;
+    const cards=[...document.querySelectorAll('.card')];
+    const card=cards.find(c=>/auto coach|smart advice|smart insights|coach/i.test(c.textContent||''))||cards[0];
+    if(!card)return;
+    const box=document.createElement('div');
+    box.id='aqxCoachModes';box.className='aqxSoftLift';
+    box.innerHTML='<label>Auto Coach tone</label><div class="aqxCoachModeGrid"><button type="button" data-mode="calm">Calm</button><button type="button" data-mode="balanced">Balanced</button><button type="button" data-mode="direct">Direct</button></div><p class="smallText">Changes the coaching feel only. It does not change scoring or reef logic.</p>';
+    card.appendChild(box);
+    const current=safeGet(COACH_KEY)||'balanced';
+    box.querySelectorAll('button').forEach(btn=>{
+      if(btn.dataset.mode===current)btn.classList.add('active');
+      btn.addEventListener('click',()=>{safeSet(COACH_KEY,btn.dataset.mode);box.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');toast('Coach tone set to '+btn.textContent)});
+    });
+  }
+
+  function addShareCard(){
+    if(document.getElementById('aqxShareScoreCard'))return;
+    const home=document.getElementById('home')||document.querySelector('[data-screen="home"]')||document.querySelector('main')||document.querySelector('.app');
+    if(!home)return;
+    const card=document.createElement('div');
+    card.id='aqxShareScoreCard';card.className='card aqxShareCard aqxSoftLift';
+    card.innerHTML='<div class="cardTitle"><h2>Share Reef Score</h2><span>Social Card</span></div><div class="aqxSharePreview"><h3 id="aqxShareTankName">AquoraX Reef Score</h3><div class="big" id="aqxShareScoreValue">--</div><small id="aqxShareMaturityText">Your reef journey</small></div><button type="button" onclick="aqxCopyShareScore()">Copy Share Text</button>';
+    home.appendChild(card);
+  }
+
+  function updateShareCard(){
+    const s=document.getElementById('aqxShareScoreValue'),m=document.getElementById('aqxShareMaturityText'),n=document.getElementById('aqxShareTankName'),mt=getMaturity();
+    if(s)s.textContent=getScoreText();
+    if(m)m.textContent=mt.icon+' '+mt.label+' — '+mt.detail;
+    if(n)n.textContent=getTankName()+' Reef Score';
+  }
+
+  function addEmptyStates(){
+    const logs=getLogs(),photos=getPhotos();
+    [...document.querySelectorAll('.card')].forEach(card=>{
+      const text=(card.textContent||'').toLowerCase();
+      if(text.includes('log')&&logs.length===0&&!card.querySelector('[data-aqx-empty="logs"]'))card.insertAdjacentHTML('beforeend','<div class="aqxEmptyState aqxSoftLift" data-aqx-empty="logs"><b>No test logged yet</b>Add your first test to unlock trends, routines and smarter advice.</div>');
+      if((text.includes('photo')||text.includes('coral growth')||text.includes('growth'))&&photos.length===0&&!card.querySelector('[data-aqx-empty="photos"]'))card.insertAdjacentHTML('beforeend','<div class="aqxEmptyState aqxSoftLift" data-aqx-empty="photos"><b>No photos yet</b>Add coral photos to track visible growth over time.</div>');
+      if(text.includes('trend')&&logs.length<2&&!card.querySelector('[data-aqx-empty="trends"]'))card.insertAdjacentHTML('beforeend','<div class="aqxEmptyState aqxSoftLift" data-aqx-empty="trends"><b>Trends unlock after 2 tests</b>Log another result so AquoraX can compare direction.</div>');
+    });
+  }
+
+  function cleanEmptyStates(){
+    const logs=getLogs(),photos=getPhotos();
+    if(logs.length>0)document.querySelectorAll('[data-aqx-empty="logs"]').forEach(e=>e.remove());
+    if(logs.length>=2)document.querySelectorAll('[data-aqx-empty="trends"]').forEach(e=>e.remove());
+    if(photos.length>0)document.querySelectorAll('[data-aqx-empty="photos"]').forEach(e=>e.remove());
+  }
+
+  function microPolish(){
+    document.querySelectorAll('.param.good,.routineItem.good').forEach(e=>e.classList.add('aqxGlowGood'));
+  }
+
+  function refreshPolish(){
+    cleanEmptyStates();addMaturityBadge();addCoachModes();addShareCard();updateShareCard();addEmptyStates();microPolish();
+  }
+
+  window.aqxFinishOnboarding=function(){
+    const profile={
+      name:(document.getElementById('aqxOnboardTankName')?.value.trim())||'My Reef',
+      type:document.getElementById('aqxOnboardTankType')?.value||'Reef',
+      litres:document.getElementById('aqxOnboardLitres')?.value||'',
+      created:new Date().toISOString()
+    };
+    writeJson(PROFILE_KEY,profile);
+    try{if(!localStorage.getItem('reefos_tank_profile'))localStorage.setItem('reefos_tank_profile',JSON.stringify(profile))}catch(e){}
+    safeSet(ONBOARD_KEY,'1');
+    document.getElementById('aqxOnboardingOverlay')?.classList.remove('show');
+    toast('AquoraX setup saved');
+    setTimeout(refreshPolish,100);
+  };
+
+  window.aqxSkipOnboarding=function(){
+    safeSet(ONBOARD_KEY,'1');
+    document.getElementById('aqxOnboardingOverlay')?.classList.remove('show');
+    toast('Onboarding skipped');
+    setTimeout(refreshPolish,100);
+  };
+
+  window.aqxCopyShareScore=function(){
+    const mt=getMaturity();
+    const text='My AquoraX Reef Score is '+getScoreText()+' — '+mt.label+' 🪸';
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(()=>toast('Share text copied')).catch(()=>prompt('Copy your share text:',text));
+    else prompt('Copy your share text:',text);
+  };
+
+  const oldShow=window.show;
+  if(typeof oldShow==='function'&&!oldShow.__aqxV30Wrapped){
+    const wrapped=function(){const r=oldShow.apply(this,arguments);setTimeout(refreshPolish,120);return r};
+    wrapped.__aqxV30Wrapped=true;window.show=wrapped;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      if(!safeGet(ONBOARD_KEY))document.getElementById('aqxOnboardingOverlay')?.classList.add('show');
+      refreshPolish();
+      setInterval(updateShareCard,2500);
+    },300);
+  });
+
+  document.addEventListener('click',function(){setTimeout(refreshPolish,250)},true);
+})();
+</script>
